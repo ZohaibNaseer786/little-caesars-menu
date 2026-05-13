@@ -14,29 +14,44 @@ const nutritionPages = [
 export function NutritionPageClient() {
   return (
     <main className="bg-white text-black">
-      <section className="mx-auto w-full max-w-[1280px] px-5 pb-7 pt-9 sm:px-6 sm:pb-8 sm:pt-12 xl:px-3">
-        <h1 className="font-display text-[42px] font-black uppercase leading-[0.82] tracking-normal text-black sm:text-[44px]">
-          Nutrition
+      <section className="mx-auto w-full max-w-[2048px] px-5 pb-8 pt-5 sm:px-8 lg:px-10">
+        <nav aria-label="Breadcrumb" className="mx-auto mb-4 flex max-w-[720px] items-center justify-center gap-2 text-[11px] font-black text-black sm:justify-start">
+          <a href="/" className="transition hover:text-orange">
+            Home
+          </a>
+          <span aria-hidden="true" className="text-medium-gray">
+            &gt;
+          </span>
+          <a href="/menu" className="transition hover:text-orange">
+            Menu
+          </a>
+          <span aria-hidden="true" className="text-medium-gray">
+            &gt;
+          </span>
+          <span>Nutrition</span>
+        </nav>
+        <h1 className="text-center font-display text-[24px] font-black uppercase leading-tight tracking-normal text-black sm:text-[28px]">
+          Little Caesars<sup className="text-[12px] leading-none">®</sup> Nutrition
         </h1>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1280px] grid-cols-1 items-start gap-y-4 px-0 pb-8 sm:grid-cols-2 sm:gap-y-0 sm:px-3">
+      <section className="mx-auto grid w-full max-w-[2048px] grid-cols-1 items-start gap-x-8 gap-y-10 px-0 pb-12 sm:px-6 md:grid-cols-2 xl:grid-cols-3 2xl:px-10">
         {nutritionPages.map((page, index) => (
-          <figure key={page} className="mx-auto w-full max-w-[720px] bg-white sm:max-w-none">
+          <figure key={page} className="mx-auto w-full max-w-[680px] bg-white md:max-w-none">
             <Image
               src={page}
               alt={`Little Caesars nutrition, allergen and ingredient guide page ${index + 1}`}
               width={1275}
               height={1650}
-              sizes="(min-width: 1280px) 640px, (min-width: 640px) 50vw, 100vw"
-              priority={index < 2}
+              sizes="(min-width: 1536px) 32vw, (min-width: 768px) 48vw, 100vw"
+              priority={index < 3}
               className="h-auto w-full object-contain"
             />
           </figure>
         ))}
       </section>
 
-      <section className="mx-auto flex w-full max-w-[1280px] flex-col items-start gap-5 px-5 pb-12 sm:px-9">
+      <section className="mx-auto flex w-full max-w-[2048px] flex-col items-center gap-4 px-5 pb-12 text-center sm:px-10">
         <a
           href="https://littlecaesars.com/static/usnutritionguide.pdf"
           target="_blank"
