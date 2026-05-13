@@ -1,0 +1,11 @@
+name = "little-caesars-menu"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+main = ".open-next/worker.js"
+
+[assets]
+directory = ".open-next/assets"
+
+[vars]
+NEXT_PUBLIC_DEFAULT_STORE_ID = "10378"
+NEXT_PUBLIC_DEFAULT_LOCALE = "en-us"
