@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const runtime = 'edge'
-
 export const metadata: Metadata = {
   title: 'Little Caesars Menu 2026 | Deals, Pizza & Nutrition',
   description:
@@ -12,15 +10,15 @@ export const metadata: Metadata = {
 }
 
 const hero = {
-  valueBanner: 'https://banners.littlecaesars.com/us/banner-assets/bb3d05f4-cc38-4dcc-b780-86000cb11767.png',
-  valueBannerMobile: 'https://banners.littlecaesars.com/us/banner-assets/8d2b44cd-36fb-46c9-b1df-dfc23a2e59c6.png',
-  pizza: 'https://banners.littlecaesars.com/us/banner-assets/1f6871fb-0299-42b0-85d3-f6854d1dd820.png'
+  valueBanner: '/images/home/value-banner-desktop.png',
+  valueBannerMobile: '/images/home/value-banner-mobile.png',
+  pizza: '/images/home/four-n-one-stix.png'
 }
 
 const deals = [
   {
     title: 'More for $9.99 Menu',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/49dbd0cc-ecb9-4a29-8766-09b153a43376.png',
+    image: '/images/home/more-for-999.png',
     headline: 'Get 2 favs for $9.99!',
     body: 'Get more from our More for $9.99 Menu.',
     note: '**See below.',
@@ -28,7 +26,7 @@ const deals = [
   },
   {
     title: '$19.99 Four-N-One Stix Meal Deal',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/178b255e-09b1-4dde-9124-21db92178c47.png',
+    image: '/images/home/four-n-one-meal-deal.png',
     headline: 'Four-N-One Stix + Large Classic',
     body: 'Plus Crazy Combo & 2L PEPSI-COLA',
     note: '***See below.',
@@ -36,7 +34,7 @@ const deals = [
   },
   {
     title: '$3 Off $18 or more',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/fff941a3-8555-4d5c-bb1d-a6944637280f.png',
+    image: '/images/home/three-off-18.png',
     headline: 'Get $3 off your order of $18+',
     body: 'Use Code: 3OFF18',
     note: '‡See below.',
@@ -48,17 +46,17 @@ const promoTiles = [
   {
     alt: 'Fundraising made deliciously easy',
     href: '/stores',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/63c5d6d5-5415-4096-9a30-ea01a5f99ea9.png'
+    image: '/images/home/fundraising.png'
   },
   {
     alt: 'Become a franchisee today',
     href: 'https://franchise.littlecaesars.com',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/0f374287-905d-48bb-b9a1-3526f7a0138f.jpg'
+    image: '/images/home/franchise.jpg'
   },
   {
     alt: 'Join our eClub',
     href: '/deals',
-    image: 'https://banners.littlecaesars.com/us/banner-assets/8c79ba32-6138-4bec-b489-be5ea4b9b9f8.png'
+    image: '/images/home/eclub.png'
   }
 ]
 
