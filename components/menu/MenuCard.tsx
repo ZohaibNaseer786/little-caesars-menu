@@ -27,13 +27,13 @@ export function MenuCard({ item }: { item: MenuItem }) {
       onKeyDown={(event) => {
         if (event.key === 'Enter') router.push(`/item/${item.id}`)
       }}
-      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_28px_-22px_rgba(15,23,42,0.9)] transition hover:-translate-y-1 hover:border-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange"
     >
       <div className="relative bg-white">
         <div className="absolute left-3 top-3 z-10">
           <Badge label={item.badge ?? (item.isHotNReady ? 'HOT-N-READY' : undefined)} />
         </div>
-        <div className="relative aspect-video">
+        <div className="relative aspect-[16/10] bg-slate-50">
           <ImageWithFallback
             src={item.image.thumbnail}
             alt={`${item.name} Little Caesars menu item`}
@@ -44,11 +44,11 @@ export function MenuCard({ item }: { item: MenuItem }) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="min-h-12 font-display text-lg font-semibold leading-tight text-navy">{item.name}</h3>
+        <h3 className="min-h-12 text-lg font-black leading-tight text-navy">{item.name}</h3>
         <p className="mt-2 line-clamp-2 text-sm leading-5 text-slate-600">{item.description}</p>
         <p className="mt-3 text-sm font-semibold text-slate-500">{item.calories.label}</p>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          <p className="font-display text-2xl font-semibold text-navy">{money(item.basePrice)}</p>
+          <p className="text-2xl font-black text-navy">{money(item.basePrice)}</p>
           <Button onClick={openDetails} aria-label={`View ${item.name} details`} className="min-h-10 px-4 py-1.5">
             Details
           </Button>

@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: '#1A1A1A',
+        navy: '#111827',
         orange: {
           DEFAULT: '#F56600',
-          soft: '#FF7A1A',
+          soft: '#D94F00',
           muted: '#FFE1CC'
         },
         cream: '#FFF6EA',

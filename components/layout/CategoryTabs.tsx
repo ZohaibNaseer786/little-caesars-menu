@@ -38,7 +38,7 @@ export function CategoryTabs({ categories }: { categories: Category[] }) {
   }
 
   return (
-    <div className="sticky top-[116px] z-40 border-y border-slate-200 bg-white">
+    <div className="sticky top-16 z-40 border-y border-slate-200 bg-white lg:top-28">
       <div className="container-shell no-scrollbar overflow-x-auto py-3">
         <div className="flex min-w-max gap-2">
           {categories.map((category) => {
@@ -50,7 +50,7 @@ export function CategoryTabs({ categories }: { categories: Category[] }) {
                 type="button"
                 onClick={() => goToCategory(category.slug)}
                 className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  active ? 'border-orange bg-orange text-white shadow-md shadow-orange/25' : 'border-navy/15 bg-white text-navy hover:border-orange/50 hover:bg-orange/5'
+                  active ? 'border-orange bg-orange text-white shadow-md shadow-orange/25' : 'border-slate-200 bg-white text-navy hover:border-orange/50 hover:bg-orange/5'
                 }`}
               >
                 {category.name}
