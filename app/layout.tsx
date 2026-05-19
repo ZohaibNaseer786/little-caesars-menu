@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Nunito_Sans, Poppins } from 'next/font/google'
 import Script from 'next/script'
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
+import { GoogleAnalyticsPageViewTracker } from '@/components/analytics/GoogleAnalyticsPageViewTracker'
 import { Footer } from '@/components/layout/Footer'
 import { Navbar } from '@/components/layout/Navbar'
 import { Providers } from '@/components/layout/Providers'
@@ -21,6 +22,8 @@ const poppins = Poppins({
 })
 
 export const runtime = 'edge'
+
+const GA_MEASUREMENT_ID = 'G-GXLT7DJEJB'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -86,6 +89,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main>{children}</main>
           <Footer />
         </Providers>
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            window.gtag = window.gtag || gtag;
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+        <Suspense fallback={null}>
+          <GoogleAnalyticsPageViewTracker measurementId={GA_MEASUREMENT_ID} />
+        </Suspense>
         <Script id="website-structured-data" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </body>
     </html>

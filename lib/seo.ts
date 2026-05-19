@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: 'Little Caesars Menu',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'https://littlecaesarsmenu.com',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.little-caesars-menus.us',
   description:
     'Independent Little Caesars menu guide with prices, deals, promo codes, calories, nutrition facts, locations and hours.',
   socialImage: '/og-image.svg',
