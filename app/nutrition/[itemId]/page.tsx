@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { AllergenBadges } from '@/components/nutrition/AllergenBadges'
 import { getFallbackItem } from '@/lib/fallback'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const runtime = 'edge'
 
@@ -12,9 +13,10 @@ export async function generateMetadata({ params }: { params: Promise<{ itemId: s
   if (!item) return { title: 'Nutrition Not Found' }
 
   return {
-    title: `${item.name} Nutrition Facts | Little Caesars Menu`,
+    title: `${item.name} Nutrition Facts`,
     description: `Nutrition facts for ${item.name}: calories, fat, carbs, protein, sodium and allergens.`,
-    alternates: { canonical: `https://littlecaesarsmenu.com/nutrition/${item.id}` }
+    keywords: [`${item.name} nutrition`, `${item.name} calories`, 'Little Caesars nutrition', ...siteConfig.keywords],
+    alternates: { canonical: absoluteUrl(`/nutrition/${item.id}`) }
   }
 }
 

@@ -3,6 +3,7 @@ import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { ItemDetail } from '@/components/menu/ItemDetail'
 import { getFallbackItem } from '@/lib/fallback'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const runtime = 'edge'
 
@@ -15,9 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ itemId: s
   }
 
   return {
-    title: `${item.name} | Little Caesars Menu - $${item.basePrice.toFixed(2)}`,
+    title: `${item.name} Price, Calories & Details - $${item.basePrice.toFixed(2)}`,
     description: `${item.name} in the Little Caesars menu guide - ${item.description}. ${item.calories.label}. Guide price $${item.basePrice.toFixed(2)}.`,
-    alternates: { canonical: `https://littlecaesarsmenu.com/item/${item.id}` },
+    keywords: [item.name, `${item.name} price`, `${item.name} calories`, ...siteConfig.keywords],
+    alternates: { canonical: absoluteUrl(`/item/${item.id}`) },
     openGraph: {
       images: [{ url: item.image.full, alt: item.name }]
     }
@@ -37,7 +39,8 @@ export default async function ItemPage({ params }: { params: Promise<{ itemId: s
     '@type': 'MenuItem',
     name: item.name,
     description: item.description,
-    image: item.image.full,
+    image: absoluteUrl(item.image.full),
+    url: absoluteUrl(`/item/${item.id}`),
     offers: {
       '@type': 'Offer',
       price: item.basePrice,

@@ -53,13 +53,13 @@ export function MenuPageClient({ categorySlug }: { categorySlug?: string }) {
           <div className="grid gap-6 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-center lg:p-10 xl:p-12">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.16em] text-white/85">Little Caesars Menu Guide</p>
-              <h1 className="mt-3 font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="mt-3 font-display text-3xl font-bold leading-tight text-white min-[380px]:text-4xl sm:text-5xl lg:text-6xl">
                 Best value in pizza, sliced for browsing
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-white/80 sm:text-base">
                 Explore HOT-N-READY favorites, ExtraMostBestest pizzas, Detroit-style deep dish, Crazy Bread, wings, desserts, prices and calories in one clean menu guide.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-col gap-3 min-[380px]:flex-row min-[380px]:flex-wrap">
                 <span className="inline-flex min-h-11 items-center rounded-full bg-black px-4 text-sm font-black uppercase text-white">
                   Pizza! Pizza!
                 </span>

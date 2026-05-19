@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { Footer } from '@/components/layout/Footer'
 import { Navbar } from '@/components/layout/Navbar'
 import { Providers } from '@/components/layout/Providers'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 import './globals.css'
 
 const nunito = Nunito_Sans({
@@ -22,62 +23,58 @@ const poppins = Poppins({
 export const runtime = 'edge'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://littlecaesarsmenu.com'),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Little Caesars Menu 2026 | Pizza, Prices, Deals & Nutrition',
+    default: 'Little Caesars Menu 2026 | Prices, Deals, Coupons & Nutrition',
     template: '%s | Little Caesars Menu'
   },
-  description:
-    'Browse an independent Little Caesars menu guide with pizza prices, calories, nutrition notes, deals, locations, HOT-N-READY items, Crazy Bread, wings and desserts.',
-  keywords: [
-    'Little Caesars menu',
-    'Little Caesars menu prices 2026',
-    'Little Caesars nutrition',
-    'Little Caesars deals',
-    'Little Caesars locations',
-    'HOT-N-READY pizza',
-    'ExtraMostBestest pizza',
-    'Crazy Bread',
-    'Little Caesars wings',
-    'Little Caesars calories'
-  ],
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://littlecaesarsmenu.com',
-    siteName: 'Little Caesars Menu',
-    title: 'Little Caesars Menu 2026 | Prices, Deals & Nutrition',
-    description: 'Independent Little Caesars menu guide with prices, calories, pizza, Crazy Bread, wings, deals and nutrition.',
-    images: [{ url: '/og-image.svg', width: 1200, height: 630, alt: 'Little Caesars Menu 2026' }]
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: 'Little Caesars Menu 2026 | Prices, Deals, Coupons & Nutrition',
+    description: siteConfig.description,
+    images: [{ url: siteConfig.socialImage, width: 1200, height: 630, alt: 'Little Caesars Menu 2026' }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Little Caesars Menu 2026 | Prices & Nutrition',
-    description: 'Pizza menu guide with Little Caesars prices, calories, deals, locations and nutrition.',
-    images: ['/og-image.svg']
+    title: 'Little Caesars Menu 2026 | Prices, Deals & Nutrition',
+    description: 'Independent guide with Little Caesars prices, calories, deals, promo codes, locations and nutrition.',
+    images: [siteConfig.socialImage]
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' }
   },
-  alternates: { canonical: 'https://littlecaesarsmenu.com' },
+  alternates: { canonical: siteConfig.url },
   verification: { google: 'your-google-verification-code' }
 }
 
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Restaurant',
-  name: 'Little Caesars',
-  description: 'Little Caesars menu guide for pizza, Crazy Bread, wings, drinks, desserts and nutrition.',
-  url: 'https://littlecaesarsmenu.com',
-  servesCuisine: 'Pizza',
-  priceRange: '$',
-  hasMenu: 'https://littlecaesarsmenu.com/menu',
-  acceptsReservations: false,
-  currenciesAccepted: 'USD',
-  paymentAccepted: 'Credit Card, Apple Pay, Google Pay',
-  menu: 'https://littlecaesarsmenu.com/menu'
+  '@type': 'WebSite',
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  inLanguage: 'en-US',
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/images/little-caesars-logo.svg')
+    }
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${absoluteUrl('/menu')}?q={search_term_string}`,
+    'query-input': 'required name=search_term_string'
+  }
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -89,7 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main>{children}</main>
           <Footer />
         </Providers>
-        <Script id="restaurant-structured-data" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <Script id="website-structured-data" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </body>
     </html>
   )

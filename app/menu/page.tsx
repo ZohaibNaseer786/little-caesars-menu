@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { MenuPageClient } from '@/components/menu/MenuPageClient'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const runtime = 'edge'
 
 export const metadata: Metadata = {
-  title: 'Little Caesars Full Menu 2026 | Pizza, Wings, Sides & Drinks',
-  description: 'Browse the Little Caesars menu guide for 2026 with pizza prices, calories, HOT-N-READY items, Crazy Bread, wings, desserts and deals.',
-  alternates: { canonical: 'https://littlecaesarsmenu.com/menu' }
+  title: 'Little Caesars Menu Prices 2026 | Pizza, Wings, Sides & Drinks',
+  description: 'Browse Little Caesars menu prices for 2026 with pizza, HOT-N-READY items, Crazy Bread, wings, drinks, desserts, calories and deals.',
+  keywords: ['Little Caesars menu prices', 'littlecaesars menu', 'Little Caesars pizza prices', ...siteConfig.keywords],
+  alternates: { canonical: absoluteUrl('/menu') }
 }
 
 export default function MenuPage() {

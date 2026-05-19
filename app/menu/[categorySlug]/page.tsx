@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { MenuPageClient } from '@/components/menu/MenuPageClient'
 import { getFallbackMenu } from '@/lib/fallback'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const runtime = 'edge'
 
@@ -16,7 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ categoryS
   return {
     title: `${category.name} Menu 2026 | Little Caesars Prices & Calories`,
     description: `Browse Little Caesars ${category.name} menu items with 2026 prices, calories and nutrition details.`,
-    alternates: { canonical: `https://littlecaesarsmenu.com/menu/${category.slug}` }
+    keywords: [`Little Caesars ${category.name} menu`, 'Little Caesars menu prices', ...siteConfig.keywords],
+    alternates: { canonical: absoluteUrl(`/menu/${category.slug}`) }
   }
 }
 

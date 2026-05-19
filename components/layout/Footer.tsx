@@ -8,7 +8,8 @@ const footerColumns = [
       { label: 'Menu', href: '/menu' },
       { label: 'Deals', href: '/deals' },
       { label: 'Nutrition', href: '/nutrition' },
-      { label: 'Stores', href: '/stores' }
+      { label: 'Stores', href: '/stores' },
+      { label: 'Blog', href: '/blog' }
     ]
   },
   {
@@ -17,7 +18,8 @@ const footerColumns = [
       { label: 'Pizza Prices', href: '/menu' },
       { label: 'Coupons & Deals', href: '/deals' },
       { label: 'Calories & Allergens', href: '/nutrition' },
-      { label: 'Find a Store', href: '/stores' }
+      { label: 'Near Me & Hours', href: '/blog/little-caesars-near-me-hours' },
+      { label: 'Value Meals', href: '/blog/best-little-caesars-value-meals' }
     ]
   },
   {

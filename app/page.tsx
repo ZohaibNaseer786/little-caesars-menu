@@ -1,48 +1,30 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { blogPosts } from '@/lib/blog'
+import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Little Caesars Menu 2026 | Deals, Pizza & Nutrition',
+  title: 'Little Caesars Menu 2026 | Prices, Deals, Promo Codes & Nutrition',
   description:
-    'Browse a Little Caesars menu guide with updated prices, deals, calories, pizza specials, nutrition and location information.',
-  alternates: { canonical: 'https://littlecaesarsmenu.com' }
+    'Browse Little Caesars menu prices, deals, promo codes, coupons, calories, nutrition facts, locations and hours in an independent 2026 guide.',
+  keywords: siteConfig.keywords,
+  alternates: { canonical: absoluteUrl('/') }
 }
 
 const hero = {
   pizza: '/images/home/four-n-one-stix.png'
 }
 
-const latestPosts = [
-  {
-    title: 'Little Caesars Menu 2026 - Updated Prices, Deals & Combos',
-    image: '/images/home/four-n-one-stix.png',
-    date: 'May 19, 2026',
-    excerpt:
-      'A complete guide to pizzas, Crazy Bread, wings, drinks, desserts, HOT-N-READY specials, calories and current value picks.'
-  },
-  {
-    title: 'Little Caesars Deals 2026 - Coupons, Codes & Meal Offers',
-    image: '/images/home/four-n-one-meal-deal.png',
-    date: 'May 13, 2026',
-    excerpt:
-      'Track weekly deals, promo codes, delivery savings and popular bundles in one simple Little Caesars savings guide.'
-  },
-  {
-    title: 'Little Caesars Nutrition Facts - Calories & Allergens',
-    image: '/images/home/more-for-999.png',
-    date: 'May 8, 2026',
-    excerpt:
-      'Compare calories, sodium, macros and allergen notes across pizzas, sides, wings, sauces and drinks before you order.'
-  }
-]
+const latestPosts = blogPosts.slice(0, 3)
 
 const categories = [
   { title: 'Pizza', body: 'Round, deep dish, stuffed crust and specialty pizzas', href: '/menu', icon: 'slice', tone: 'orange' },
   { title: 'Sides', body: 'Crazy Bread, combos, puffs, dips and sauces', href: '/menu/sides', icon: 'plus', tone: 'dark' },
   { title: 'Deals', body: 'Coupons, meal bundles and limited-time offers', href: '/deals', icon: 'tag', tone: 'orange' },
   { title: 'Nutrition', body: 'Calories, macros, sodium and allergen tables', href: '/nutrition', icon: 'spark', tone: 'dark' },
-  { title: 'Stores', body: 'Find nearby Little Caesars locations and hours', href: '/stores', icon: 'pin', tone: 'orange' }
+  { title: 'Stores', body: 'Find nearby Little Caesars locations and hours', href: '/stores', icon: 'pin', tone: 'orange' },
+  { title: 'Blog', body: 'SEO guides for prices, deals, calories and locations', href: '/blog', icon: 'menu', tone: 'dark' }
 ]
 
 const popularMenus = [
@@ -110,6 +92,12 @@ const dealRows = [
   { brand: 'Meal Deal', title: 'Four-N-One Stix meal bundle', code: 'MEALDEAL', badge: 'Bundle', tone: 'orange' },
   { brand: 'Value Menu', title: 'Get 2 favorites for $9.99', code: 'VALUE999', badge: '$9.99', tone: 'green' }
 ]
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+
+function formatDate(date: string) {
+  return dateFormatter.format(new Date(`${date}T00:00:00`))
+}
 
 function Icon({ name }: { name: string }) {
   if (name === 'slice') {
@@ -245,20 +233,20 @@ function SectionHeading({
 export default function HomePage() {
   return (
     <main className="bg-white text-[#111827]">
-      <section className="bg-[#f4f6f8] px-4 py-8 sm:px-6 lg:px-8">
+      <section className="bg-[#f4f6f8] px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mx-auto grid max-w-[1152px] overflow-hidden rounded-[22px] bg-[#172033] shadow-[0_22px_60px_-34px_rgba(17,24,39,0.75)] lg:grid-cols-[1fr_1.05fr]">
-          <div className="flex flex-col justify-center px-8 py-10 text-white sm:px-10 lg:px-12">
+          <div className="flex flex-col justify-center px-6 py-9 text-white min-[380px]:px-8 sm:px-10 lg:px-12">
             <span className="mb-4 inline-flex w-fit rounded-full bg-white px-4 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-[#F56600]">
               Verified Prices
             </span>
-            <h1 className="font-display text-4xl font-black leading-[1.05] sm:text-5xl">
+            <h1 className="font-display text-3xl font-black leading-[1.08] min-[380px]:text-4xl sm:text-5xl">
               Little Caesars Menu with Prices in the United States
               <span className="mt-2 block text-[#F56600]">Updated May 2026</span>
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
               Your quick source for Little Caesars menu prices, calories, deals and fan-favorite picks. From HOT-N-READY pizza to Crazy Bread, we organize every menu detail.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-col gap-3 min-[380px]:flex-row min-[380px]:flex-wrap">
               <Link href="/menu" className="rounded-lg bg-[#F56600] px-5 py-3 text-sm font-black text-white shadow-[0_10px_24px_rgba(245,102,0,0.28)] transition hover:bg-[#D94F00]">
                 Browse Full Menu
               </Link>
@@ -267,7 +255,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative min-h-[300px] bg-[linear-gradient(120deg,#fff4ec,#ffffff)] lg:min-h-[360px]">
+          <div className="relative min-h-[250px] bg-[linear-gradient(120deg,#fff4ec,#ffffff)] sm:min-h-[300px] lg:min-h-[360px]">
             <Image
               src={hero.pizza}
               alt="Little Caesars Four-N-One Stix pizza"
@@ -281,25 +269,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#f4f6f8] px-4 py-16 sm:px-6 lg:px-8">
+      <section className="bg-[#f4f6f8] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1216px]">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading eyebrow="Latest Posts" title="Most Recent Menu Updates" subtitle="Stay updated with Little Caesars prices, deals and nutrition guides" />
-            <Link href="/menu" className="hidden text-sm font-bold text-[#F56600] hover:text-[#D94F00] sm:inline-flex">View All &rarr;</Link>
+            <Link href="/blog" className="hidden text-sm font-bold text-[#F56600] hover:text-[#D94F00] sm:inline-flex">View All &rarr;</Link>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {latestPosts.map((post) => (
               <article key={post.title} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_28px_-22px_rgba(15,23,42,0.8)]">
                 <div className="relative h-52 bg-slate-100">
                   <Image src={post.image} alt={post.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-contain p-4" />
-                  <span className="absolute left-4 top-4 rounded-full bg-[#FFE1CC] px-3 py-1 text-xs font-bold text-[#F56600]">Menu Guides</span>
+                  <span className="absolute left-4 top-4 rounded-full bg-[#FFE1CC] px-3 py-1 text-xs font-bold text-[#F56600]">{post.category}</span>
                   <span className="absolute right-4 top-4 rounded-full bg-[#F56600] px-3 py-1 text-xs font-black text-white">FEATURED</span>
                 </div>
                 <div className="p-6">
-                  <p className="text-sm text-slate-400">{post.date} · Little Caesars Menu Team</p>
+                  <p className="text-sm text-slate-400">{formatDate(post.updated)} · Little Caesars Menu Team</p>
                   <h3 className="mt-4 text-lg font-black leading-snug text-[#111827]">{post.title}</h3>
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{post.excerpt}</p>
-                  <Link href="/menu" className="mt-5 inline-flex text-sm font-bold text-[#F56600] hover:text-[#D94F00]">Read More &rarr;</Link>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{post.description}</p>
+                  <Link href={`/blog/${post.slug}`} className="mt-5 inline-flex text-sm font-bold text-[#F56600] hover:text-[#D94F00]">Read More &rarr;</Link>
                 </div>
               </article>
             ))}
@@ -307,10 +295,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1216px]">
           <SectionHeading centered title="Browse Menus by Category" subtitle="Find exactly what you are craving with organized Little Caesars menu sections" />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-10 grid gap-4 min-[520px]:grid-cols-2 lg:grid-cols-5">
             {categories.map((category) => (
               <Link
                 key={category.title}
@@ -328,10 +316,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#f4f6f8] px-4 py-16 sm:px-6 lg:px-8">
+      <section className="bg-[#f4f6f8] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1216px]">
           <SectionHeading centered eyebrow="Most Popular" title="Top Rated Little Caesars Menus" subtitle="Most searched menu sections with verified prices and clear details" />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-6 min-[560px]:grid-cols-2 lg:grid-cols-4">
             {popularMenus.map((menu) => (
               <article key={menu.title} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_26px_-22px_rgba(15,23,42,0.9)]">
                 <div className="relative h-44 bg-white">
@@ -352,7 +340,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1216px]">
           <SectionHeading centered title="Smart Pizza Guides" subtitle="Make informed choices with curated Little Caesars menu guides" />
           <div className="mt-12 grid gap-8 lg:grid-cols-3">
@@ -372,7 +360,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#172033] px-4 py-16 text-white sm:px-6 lg:px-8">
+      <section className="bg-[#172033] px-4 py-12 text-white sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1216px] text-center">
           <h2 className="font-display text-3xl font-black sm:text-4xl">Why Trust Little Caesars Menu?</h2>
           <p className="mt-3 text-lg text-slate-300">A reliable source for quick menu, price and nutrition information</p>
@@ -390,7 +378,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#f4f6f8] px-4 py-16 sm:px-6 lg:px-8">
+      <section className="bg-[#f4f6f8] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1088px]">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <SectionHeading eyebrow="Save Money" title="This Week's Top Little Caesars Deals" subtitle="Promo codes and value deals organized for fast checking." />
@@ -398,7 +386,7 @@ export default function HomePage() {
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {dealRows.map((deal) => (
-              <article key={deal.code} className="flex items-center gap-4 rounded-xl border border-[#FFE1CC] bg-white p-4 shadow-[0_8px_20px_-22px_rgba(15,23,42,0.8)]">
+              <article key={deal.code} className="grid gap-3 rounded-xl border border-[#FFE1CC] bg-white p-4 shadow-[0_8px_20px_-22px_rgba(15,23,42,0.8)] min-[520px]:flex min-[520px]:items-center min-[520px]:gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[#FFD2B8] bg-white text-[#F56600]">
                   <Icon name="tag" />
                 </div>
@@ -407,7 +395,7 @@ export default function HomePage() {
                   <h3 className="truncate text-sm font-black text-[#111827] sm:text-base">{deal.title}</h3>
                 </div>
                 <span className="hidden rounded-md bg-[#F56600] px-3 py-2 text-xs font-black text-white sm:inline-flex">{deal.badge}</span>
-                <span className="rounded-lg border border-dashed border-[#FFB680] bg-[#FFF3EA] px-3 py-2 text-sm font-black tracking-[0.08em] text-[#111827]">
+                <span className="w-fit rounded-lg border border-dashed border-[#FFB680] bg-[#FFF3EA] px-3 py-2 text-sm font-black tracking-[0.08em] text-[#111827]">
                   {deal.code}
                 </span>
               </article>

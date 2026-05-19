@@ -82,8 +82,8 @@ function couponFromDeal(fallback: CouponDeal, deal?: Deal): CouponDeal {
 
 function MealDealFeature({ deal }: { deal?: Deal }) {
   return (
-    <article className="relative min-h-[420px] overflow-hidden bg-orange p-7 text-black sm:min-h-[440px] lg:min-h-[460px]">
-      <div className="absolute inset-x-0 top-0 h-[74%]">
+    <article className="relative min-h-[360px] overflow-hidden bg-orange p-5 text-black sm:min-h-[440px] sm:p-7 lg:min-h-[460px]">
+      <div className="absolute inset-x-0 top-0 h-[66%] sm:h-[74%]">
         <ImageWithFallback
           src={mealCreative.image}
           alt="Four-N-One Stix Meal Deal pizza, Crazy Bread and Pepsi"
@@ -93,9 +93,9 @@ function MealDealFeature({ deal }: { deal?: Deal }) {
           className="object-contain object-top"
         />
       </div>
-      <div className="relative z-10 flex h-full min-h-[380px] flex-col justify-end">
-        <h2 className="font-display text-5xl font-black uppercase leading-[0.9] tracking-normal text-white sm:text-6xl lg:text-7xl">
-          Four-N-One<span className="ml-2 font-sans text-3xl italic normal-case text-black sm:text-4xl">Stix</span>
+      <div className="relative z-10 flex h-full min-h-[320px] flex-col justify-end sm:min-h-[380px]">
+        <h2 className="font-display text-4xl font-black uppercase leading-[0.92] tracking-normal text-white sm:text-6xl lg:text-7xl">
+          Four-N-One<span className="ml-2 font-sans text-2xl italic normal-case text-black sm:text-4xl">Stix</span>
           <span className="block">Meal Deal</span>
         </h2>
         <p className="mt-2 text-xs font-bold sm:text-sm">{deal?.description || mealCreative.subtitle}</p>
@@ -107,17 +107,17 @@ function MealDealFeature({ deal }: { deal?: Deal }) {
 function CouponCard({ coupon }: { coupon: CouponDeal }) {
   return (
     <article
-      className="relative min-h-[420px] p-4"
+      className="relative min-h-[380px] p-3 sm:min-h-[420px] sm:p-4"
       style={{
         backgroundImage: 'radial-gradient(circle, rgba(26,26,26,0.2) 1.2px, transparent 1.8px)',
         backgroundSize: '14px 14px'
       }}
     >
-      <div className="relative flex h-full min-h-[388px] flex-col items-center bg-white px-5 pb-6 pt-9 text-center sm:px-8">
+      <div className="relative flex h-full min-h-[352px] flex-col items-center bg-white px-4 pb-6 pt-9 text-center sm:min-h-[388px] sm:px-8">
         <div className="absolute -top-4 left-1/2 flex h-8 w-44 -translate-x-1/2 items-center justify-center bg-black px-5 text-sm font-black uppercase text-white [clip-path:polygon(8%_0,92%_0,100%_50%,92%_100%,8%_100%,0_50%)]">
           {coupon.eyebrow}
         </div>
-        <div className="relative h-28 w-56 sm:h-32 sm:w-64">
+        <div className="relative h-24 w-48 sm:h-32 sm:w-64">
           <ImageWithFallback
             src={coupon.image}
             alt={coupon.imageAlt}
@@ -126,11 +126,11 @@ function CouponCard({ coupon }: { coupon: CouponDeal }) {
             className="object-contain"
           />
         </div>
-        <h2 className="mt-5 font-display text-4xl font-black uppercase leading-none text-orange sm:text-5xl">{coupon.amount}</h2>
-        <p className="mt-3 font-display text-xl font-black uppercase leading-tight text-orange sm:text-2xl">{coupon.headline}</p>
+        <h2 className="mt-5 font-display text-3xl font-black uppercase leading-none text-orange sm:text-5xl">{coupon.amount}</h2>
+        <p className="mt-3 font-display text-lg font-black uppercase leading-tight text-orange sm:text-2xl">{coupon.headline}</p>
         <p className="mt-7 text-xs font-black uppercase text-black">{coupon.instructions}</p>
         <div className="mt-3 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <strong className="font-display text-3xl font-black uppercase tracking-normal text-black sm:text-4xl">{coupon.code}</strong>
+          <strong className="break-all font-display text-2xl font-black uppercase tracking-normal text-black sm:text-4xl">{coupon.code}</strong>
           <span className="hidden h-12 w-px bg-black/40 sm:block" />
           <button
             type="button"
@@ -149,7 +149,7 @@ function CouponCard({ coupon }: { coupon: CouponDeal }) {
 
 function ExclusiveDealsCard() {
   return (
-    <article className="relative flex min-h-[420px] items-center justify-center overflow-hidden border-2 border-orange bg-white px-8 py-12 text-center">
+    <article className="relative flex min-h-[380px] items-center justify-center overflow-hidden border-2 border-orange bg-white px-5 py-10 text-center sm:min-h-[420px] sm:px-8 sm:py-12">
       <span className="absolute -left-20 top-4 h-48 w-28 rounded-r-full bg-orange" />
       <span className="absolute -left-16 bottom-14 h-44 w-28 rounded-r-full bg-orange" />
       <span className="absolute -bottom-20 right-14 h-52 w-28 rounded-t-full bg-orange" />
@@ -158,9 +158,9 @@ function ExclusiveDealsCard() {
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-orange text-center font-display text-xl font-black uppercase leading-none text-white">
           Crazy!<br />Crazy!<br />Deals
         </div>
-        <h2 className="mt-7 font-display text-4xl font-black uppercase leading-tight text-orange sm:text-5xl">
+        <h2 className="mt-7 font-display text-3xl font-black uppercase leading-tight text-orange sm:text-5xl">
           Want Access To
-          <span className="block font-sans text-4xl italic normal-case text-black sm:text-5xl">Exclusive Deals?</span>
+          <span className="block font-sans text-3xl italic normal-case text-black sm:text-5xl">Exclusive Deals?</span>
         </h2>
         <p className="mx-auto mt-4 max-w-sm text-lg font-semibold leading-7 text-black">
           Subscribe for access to exclusive offers, promotions and Crazy!Crazy!® Deals
@@ -183,12 +183,12 @@ export function DealsPageClient() {
 
   return (
     <main className="bg-white px-4 py-8 text-black sm:py-12">
-      <div className="mx-auto grid max-w-[1180px] gap-9 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-[1180px] gap-6 sm:gap-9 lg:grid-cols-2">
         {dealsQuery.isLoading ? (
           <>
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="min-h-[420px] bg-white p-4">
-                <LoadingSkeleton className="h-full min-h-[390px] w-full rounded-none" />
+              <div key={index} className="min-h-[320px] bg-white p-3 sm:min-h-[420px] sm:p-4">
+                <LoadingSkeleton className="h-full min-h-[300px] w-full rounded-none sm:min-h-[390px]" />
               </div>
             ))}
           </>

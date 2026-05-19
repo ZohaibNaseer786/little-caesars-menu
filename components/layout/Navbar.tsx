@@ -7,9 +7,8 @@ import { useState } from 'react'
 
 const navItems = [
   { href: '/menu', label: 'Little Caesars Menu' },
-  { href: '/menu', label: 'Menu Types' },
-  { href: '/nutrition', label: 'Meal Planner' },
-  { href: '/deals', label: 'Latest Menu Updates', highlight: true },
+  { href: '/deals', label: 'Deals & Coupons', highlight: true },
+  { href: '/blog', label: 'Guides' },
   { href: '/stores', label: 'Find a Store' },
   { href: '/nutrition', label: 'Nutrition' }
 ]
@@ -29,24 +28,24 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-[0_4px_18px_rgba(15,23,42,0.08)]">
-      <div className="mx-auto flex h-16 max-w-[1216px] items-center gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-[1216px] items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
         <button
           type="button"
           aria-label="Toggle navigation"
           onClick={() => setOpen((value) => !value)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[#172033] transition hover:bg-slate-100 lg:hidden"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#172033] transition hover:bg-slate-100 lg:hidden"
         >
           <span className="h-0.5 w-5 bg-current before:block before:h-0.5 before:w-5 before:-translate-y-1.5 before:bg-current after:block after:h-0.5 after:w-5 after:translate-y-1 after:bg-current" />
         </button>
 
-        <Link href="/" aria-label="Little Caesars Menu home" className="flex shrink-0 items-center">
+        <Link href="/" aria-label="Little Caesars Menu home" className="flex min-w-0 shrink items-center sm:shrink-0">
           <Image
             src="/images/little-caesars-logo.svg"
             alt="Little Caesars Menu"
             width={190}
             height={54}
             priority
-            className="h-9 w-auto"
+            className="h-8 w-auto max-w-[128px] sm:h-9 sm:max-w-none"
           />
         </Link>
 
@@ -67,11 +66,11 @@ export function Navbar() {
           </div>
         </form>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
           <Link href="/stores" className="hidden text-sm font-semibold text-[#172033] transition hover:text-[#F56600] sm:inline-flex">
             Contact
           </Link>
-          <Link href="/deals" className="rounded-full bg-[#F56600] px-4 py-2.5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(245,102,0,0.24)] transition hover:bg-[#D94F00]">
+          <Link href="/deals" className="rounded-full bg-[#F56600] px-3 py-2.5 text-xs font-bold leading-none text-white shadow-[0_8px_20px_rgba(245,102,0,0.24)] transition hover:bg-[#D94F00] sm:px-4 sm:text-sm">
             Coupons & Deals
           </Link>
         </div>
