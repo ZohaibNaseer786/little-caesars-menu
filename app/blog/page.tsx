@@ -4,10 +4,8 @@ import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
 import { absoluteUrl, siteConfig } from '@/lib/seo'
 
-export const runtime = 'edge'
-
 export const metadata: Metadata = {
-  title: 'Little Caesars Blog: Menu Prices, Deals, Nutrition and Locations',
+  title: 'Little Caesars Guides: Prices, Deals, Nutrition & Hours',
   description:
     'Read Little Caesars menu guides for prices, promo codes, coupons, nutrition facts, calories, store hours, locations and value meals.',
   keywords: [

@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { MenuPageClient } from '@/components/menu/MenuPageClient'
+import { getFallbackMenu } from '@/lib/fallback'
 import { absoluteUrl, siteConfig } from '@/lib/seo'
-
-export const runtime = 'edge'
 
 export const metadata: Metadata = {
   title: 'Little Caesars Menu Prices 2026 | Pizza, Wings, Sides & Drinks',
@@ -11,6 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: absoluteUrl('/menu') }
 }
 
-export default function MenuPage() {
-  return <MenuPageClient />
+export default async function MenuPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q = '' } = await searchParams
+  const menu = getFallbackMenu()
+  return <MenuPageClient initialMenu={menu} initialCategories={menu.categories} searchQuery={q.trim().slice(0, 80)} />
 }

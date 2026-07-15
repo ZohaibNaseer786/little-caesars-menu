@@ -8,7 +8,7 @@ import { MenuCardSkeleton } from '@/components/menu/MenuCardSkeleton'
 import { MenuGrid } from '@/components/menu/MenuGrid'
 import { useCategories, useMenu } from '@/hooks/useMenu'
 import { useAppStore } from '@/store/useAppStore'
-import type { Category, MenuItem } from '@/types'
+import type { Category, MenuItem, MenuResponse } from '@/types'
 
 function matchesFilter(item: MenuItem, filter: string) {
   if (filter === 'vegetarian') return item.tags.includes('vegetarian')
@@ -26,23 +26,38 @@ function sectionItems(category: Category, items: MenuItem[]) {
   return items.filter((item) => item.categoryId === category.id)
 }
 
-export function MenuPageClient({ categorySlug }: { categorySlug?: string }) {
+function matchesSearch(item: MenuItem, searchQuery: string) {
+  if (!searchQuery) return true
+  const searchable = [item.name, item.description, ...item.tags].join(' ').toLowerCase()
+  return searchable.includes(searchQuery.toLowerCase())
+}
+
+type MenuPageClientProps = {
+  categorySlug?: string
+  initialMenu: MenuResponse
+  initialCategories: Category[]
+  searchQuery?: string
+}
+
+export function MenuPageClient({ categorySlug, initialMenu, initialCategories, searchQuery = '' }: MenuPageClientProps) {
   const [filter, setFilter] = useState('all')
   const storeId = useAppStore((state) => state.storeId)
   const orderType = useAppStore((state) => state.orderType)
-  const menuQuery = useMenu(storeId, orderType)
-  const categoriesQuery = useCategories(storeId)
+  const menuQuery = useMenu(storeId, orderType, initialMenu)
+  const categoriesQuery = useCategories(storeId, initialCategories)
 
   const categories = (categoriesQuery.data ?? menuQuery.data?.categories ?? []).filter((category) => category.isAvailable)
   const items = menuQuery.data?.items ?? []
 
   const sections = useMemo(() => {
-    const filteredItems = items.filter((item) => item.isAvailable && item.orderTypes.includes(orderType) && matchesFilter(item, filter))
+    const filteredItems = items.filter(
+      (item) => item.isAvailable && item.orderTypes.includes(orderType) && matchesFilter(item, filter) && matchesSearch(item, searchQuery)
+    )
     return categories
       .map((category) => ({ category, items: sectionItems(category, filteredItems) }))
       .filter((section) => section.items.length > 0)
       .filter((section) => (categorySlug ? section.category.slug === categorySlug : true))
-  }, [categories, categorySlug, filter, items, orderType])
+  }, [categories, categorySlug, filter, items, orderType, searchQuery])
 
   const loading = menuQuery.isLoading || categoriesQuery.isLoading
 
@@ -54,7 +69,7 @@ export function MenuPageClient({ categorySlug }: { categorySlug?: string }) {
             <div>
               <p className="text-sm font-black uppercase tracking-[0.16em] text-white/85">Little Caesars Menu Guide</p>
               <h1 className="mt-3 font-display text-3xl font-bold leading-tight text-white min-[380px]:text-4xl sm:text-5xl lg:text-6xl">
-                Best value in pizza, sliced for browsing
+                Little Caesars menu with pictures and prices
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-white/80 sm:text-base">
                 Explore HOT-N-READY favorites, ExtraMostBestest pizzas, Detroit-style deep dish, Crazy Bread, wings, desserts, prices and calories in one clean menu guide.
@@ -87,6 +102,13 @@ export function MenuPageClient({ categorySlug }: { categorySlug?: string }) {
 
       <div className="container-shell">
         <div className="grid gap-12">
+          {searchQuery && !loading && (
+            <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4">
+              <p className="text-sm font-bold text-slate-600">
+                Showing menu results for <span className="text-navy">&ldquo;{searchQuery}&rdquo;</span>
+              </p>
+            </div>
+          )}
           {loading && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, index) => (

@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import api from '@/lib/axios'
 import type { Category, MenuItem, MenuResponse, OrderType } from '@/types'
 
-export function useMenu(storeId: string, orderType: string) {
+export function useMenu(storeId: string, orderType: string, initialData?: MenuResponse) {
   return useQuery({
     queryKey: ['menu', storeId, orderType],
     queryFn: () =>
@@ -12,7 +12,8 @@ export function useMenu(storeId: string, orderType: string) {
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
     retry: 2,
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    initialData
   })
 }
 
@@ -26,12 +27,13 @@ export function useMenuItem(storeId: string, itemId: string) {
   })
 }
 
-export function useCategories(storeId: string) {
+export function useCategories(storeId: string, initialData?: Category[]) {
   return useQuery({
     queryKey: ['categories', storeId],
     queryFn: () =>
       api.get<Category[]>('/categories', { params: { storeId } }).then((data) => data as unknown as Category[]),
-    staleTime: 1000 * 60 * 15
+    staleTime: 1000 * 60 * 15,
+    initialData
   })
 }
 

@@ -22,46 +22,13 @@ const generalFallbackDeals: Deal[] = [
     isAppOnly: false,
     isAvailable: true
   },
-  {
-    id: '3off18',
-    title: '$3 Off Your Order of $18 or More',
-    description: 'Add items to cart. Code applied at checkout.',
-    price: 0,
-    originalPrice: 3,
-    badge: 'SAVE HERE!',
-    image: 'https://mobilestatic.littlecaesars.com/weborderingimages/4a10fa34-207e-4db4-ba42-30e3c7907318.jpg',
-    promoCode: '3OFF18',
-    discountType: 'flat',
-    discountValue: 3,
-    minimumOrder: 18,
-    orderTypes: ['pickup', 'delivery'],
-    validUntil: '2026-05-31',
-    isLimitedTime: true,
-    isAppOnly: false,
-    isAvailable: true
-  },
-  {
-    id: 'delivery4you',
-    title: '$4 Off Delivery',
-    description: 'Add items to cart. Code applied at checkout.',
-    price: 0,
-    originalPrice: 4,
-    badge: 'GET DELIVERY!',
-    image: 'https://mobilestatic.littlecaesars.com/weborderingimages/4f19503b-3c2f-4322-af48-b471e48e47c0.jpg',
-    promoCode: 'DELIVERY4YOU',
-    discountType: 'flat',
-    discountValue: 4,
-    minimumOrder: 24,
-    orderTypes: ['delivery'],
-    validUntil: null,
-    isLimitedTime: true,
-    isAppOnly: false,
-    isAvailable: true
-  }
 ]
 
 function getGeneralFallbackDeals() {
-  const publicStoreDeals = getFallbackDeals().filter((deal) => deal.isAvailable && !deal.isAppOnly)
+  const today = new Date().toISOString().slice(0, 10)
+  const publicStoreDeals = getFallbackDeals().filter(
+    (deal) => deal.isAvailable && !deal.isAppOnly && (!deal.validUntil || deal.validUntil >= today)
+  )
   return [...generalFallbackDeals, ...publicStoreDeals]
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { blogPosts } from '@/lib/blog'
+import { getFallbackDeals } from '@/lib/fallback'
 import { absoluteUrl, siteConfig } from '@/lib/seo'
 
 export const metadata: Metadata = {
@@ -80,17 +81,10 @@ const guides = [
 ]
 
 const trustItems = [
-  { title: 'Verified Prices', body: 'Menu prices and deals organized for quick checking', color: 'bg-emerald-500', icon: 'check' },
+  { title: 'Clear Price Guide', body: 'Menu prices and deals organized for quick checking', color: 'bg-emerald-500', icon: 'check' },
   { title: 'Updated Often', body: 'Fresh menu updates, offers and nutrition references', color: 'bg-blue-500', icon: 'refresh' },
   { title: 'Complete Menu', body: 'Pizza, sides, wings, sauces, drinks and desserts', color: 'bg-[#F56600]', icon: 'menu' },
   { title: 'Easy to Compare', body: 'Cards, tables and guides built for fast decisions', color: 'bg-amber-400', icon: 'shield' }
-]
-
-const dealRows = [
-  { brand: 'Little Caesars', title: '$3 off orders of $18+', code: '3OFF18', badge: '$3 OFF', tone: 'orange' },
-  { brand: 'Delivery', title: '$4 off delivery orders of $24+', code: 'DELIVERY4YOU', badge: '$4 OFF', tone: 'navy' },
-  { brand: 'Meal Deal', title: 'Four-N-One Stix meal bundle', code: 'MEALDEAL', badge: 'Bundle', tone: 'orange' },
-  { brand: 'Value Menu', title: 'Get 2 favorites for $9.99', code: 'VALUE999', badge: '$9.99', tone: 'green' }
 ]
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -231,17 +225,21 @@ function SectionHeading({
 }
 
 export default function HomePage() {
+  const dealRows = getFallbackDeals()
+    .filter((deal) => deal.isAvailable && !deal.isAppOnly)
+    .slice(0, 4)
+
   return (
     <main className="bg-white text-[#111827]">
       <section className="bg-[#f4f6f8] px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mx-auto grid max-w-[1152px] overflow-hidden rounded-[22px] bg-[#172033] shadow-[0_22px_60px_-34px_rgba(17,24,39,0.75)] lg:grid-cols-[1fr_1.05fr]">
           <div className="flex flex-col justify-center px-6 py-9 text-white min-[380px]:px-8 sm:px-10 lg:px-12">
             <span className="mb-4 inline-flex w-fit rounded-full bg-white px-4 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-[#F56600]">
-              Verified Prices
+              Independent Price Guide
             </span>
             <h1 className="font-display text-3xl font-black leading-[1.08] min-[380px]:text-4xl sm:text-5xl">
               Little Caesars Menu with Prices in the United States
-              <span className="mt-2 block text-[#F56600]">Updated May 2026</span>
+              <span className="mt-2 block text-[#F56600]">Updated July 2026</span>
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
               Your quick source for Little Caesars menu prices, calories, deals and fan-favorite picks. From HOT-N-READY pizza to Crazy Bread, we organize every menu detail.
@@ -264,7 +262,7 @@ export default function HomePage() {
               sizes="(min-width: 1024px) 48vw, 100vw"
               className="object-contain p-6 sm:p-8"
             />
-            <span className="absolute right-5 top-5 rounded-full bg-[#F56600] px-4 py-2 text-xs font-black uppercase text-white">Updated 2026</span>
+            <span className="absolute right-5 top-5 rounded-full bg-[#F56600] px-4 py-2 text-xs font-black uppercase text-white">Reviewed July 2026</span>
           </div>
         </div>
       </section>
@@ -381,22 +379,21 @@ export default function HomePage() {
       <section className="bg-[#f4f6f8] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-[1088px]">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <SectionHeading eyebrow="Save Money" title="This Week's Top Little Caesars Deals" subtitle="Promo codes and value deals organized for fast checking." />
+            <SectionHeading eyebrow="Save Money" title="Featured Little Caesars Value Picks" subtitle="Public menu offers and bundles organized for fast checking. Availability varies by location." />
             <Link href="/deals" className="text-sm font-bold text-[#F56600] hover:text-[#D94F00]">View All Deals &rarr;</Link>
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {dealRows.map((deal) => (
-              <article key={deal.code} className="grid gap-3 rounded-xl border border-[#FFE1CC] bg-white p-4 shadow-[0_8px_20px_-22px_rgba(15,23,42,0.8)] min-[520px]:flex min-[520px]:items-center min-[520px]:gap-4">
+              <article key={deal.id} className="grid gap-3 rounded-xl border border-[#FFE1CC] bg-white p-4 shadow-[0_8px_20px_-22px_rgba(15,23,42,0.8)] min-[520px]:flex min-[520px]:items-center min-[520px]:gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[#FFD2B8] bg-white text-[#F56600]">
                   <Icon name="tag" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-slate-400">{deal.brand}</p>
+                  <p className="text-sm text-slate-400">{deal.badge || 'Public offer'}</p>
                   <h3 className="truncate text-sm font-black text-[#111827] sm:text-base">{deal.title}</h3>
                 </div>
-                <span className="hidden rounded-md bg-[#F56600] px-3 py-2 text-xs font-black text-white sm:inline-flex">{deal.badge}</span>
-                <span className="w-fit rounded-lg border border-dashed border-[#FFB680] bg-[#FFF3EA] px-3 py-2 text-sm font-black tracking-[0.08em] text-[#111827]">
-                  {deal.code}
+                <span className="w-fit rounded-lg border border-dashed border-[#FFB680] bg-[#FFF3EA] px-3 py-2 text-sm font-black text-[#111827]">
+                  {deal.price > 0 ? `$${deal.price.toFixed(2)}` : 'Price varies'}
                 </span>
               </article>
             ))}

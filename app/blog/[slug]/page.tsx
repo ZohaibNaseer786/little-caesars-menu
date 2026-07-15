@@ -4,9 +4,14 @@ import Link from 'next/link'
 import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { blogPosts, getBlogPost } from '@/lib/blog'
-import { absoluteUrl, siteConfig } from '@/lib/seo'
+import { getFallbackMenu } from '@/lib/fallback'
+import { absoluteUrl, siteConfig, truncateSeoText } from '@/lib/seo'
 
-export const runtime = 'edge'
+export function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }))
+}
+
+export const dynamicParams = false
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -20,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: post.title,
+    title: truncateSeoText(post.title, 65),
     description: post.description,
     keywords: [...siteConfig.keywords, ...post.keywords],
     alternates: { canonical: absoluteUrl(`/blog/${post.slug}`) },
@@ -85,6 +90,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3)
+  const menuPriceItems =
+    post.slug === 'little-caesars-menu-prices'
+      ? getFallbackMenu().items.filter((item) => item.isAvailable && item.basePrice > 0).slice(0, 18)
+      : []
 
   return (
     <main className="bg-white text-[#111827]">
@@ -136,6 +145,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 ))}
               </div>
 
+              {menuPriceItems.length > 0 && (
+                <section className="mt-12" aria-labelledby="menu-pictures-prices">
+                  <h2 id="menu-pictures-prices" className="font-display text-2xl font-black text-[#111827] sm:text-3xl">
+                    Little Caesars Menu with Pictures and Prices
+                  </h2>
+                  <p className="mt-3 leading-7 text-slate-700">
+                    These guide prices are shown for quick comparison. Restaurant pricing, taxes, availability and delivery fees can vary by location.
+                  </p>
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {menuPriceItems.map((item) => (
+                      <Link key={item.id} href={`/item/${item.id}`} className="grid grid-cols-[96px_1fr] gap-4 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-[#F56600]">
+                        <span className="relative h-24 overflow-hidden rounded-lg bg-[#fff7f0]">
+                          <Image src={item.image.thumbnail || item.image.full} alt={`${item.name} picture`} fill sizes="96px" className="object-contain p-1" />
+                        </span>
+                        <span className="min-w-0 self-center">
+                          <strong className="block leading-snug text-[#111827]">{item.name}</strong>
+                          <span className="mt-2 block font-black text-[#F56600]">${item.basePrice.toFixed(2)}</span>
+                          <span className="mt-1 block text-xs text-slate-500">{item.calories.label}</span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link href="/menu" className="mt-6 inline-flex font-bold text-[#F56600] hover:text-[#D94F00]">
+                    Browse the complete menu and all categories &rarr;
+                  </Link>
+                </section>
+              )}
+
               <section className="mt-12 rounded-2xl border border-[#FFD2B8] bg-[#FFF7F0] p-6 sm:p-8">
                 <h2 className="font-display text-2xl font-black">Quick Answers</h2>
                 <div className="mt-6 grid gap-5">
@@ -161,14 +198,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </div>
               </div>
               <div className="mt-6 rounded-2xl bg-[#172033] p-6 text-white">
-                <h2 className="text-lg font-black">Keyword Focus</h2>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {post.keywords.map((keyword) => (
-                    <span key={keyword} className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold">
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
+                <h2 className="text-lg font-black">How We Update This Guide</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-200">
+                  We compare public menu information, nutrition references and store-level price notes. Prices are planning estimates until a location confirms the final total.
+                </p>
+                <Link href="/editorial-policy" className="mt-4 inline-flex text-sm font-bold text-orange-muted hover:text-white">
+                  Read our editorial policy &rarr;
+                </Link>
               </div>
             </aside>
           </div>

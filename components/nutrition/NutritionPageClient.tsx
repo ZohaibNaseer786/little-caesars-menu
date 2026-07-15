@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import type { MenuItem } from '@/types'
 
 const nutritionPages = [
   'https://www.datocms-assets.com/95658/1751552586-cr0026254_lj_nutri-info-allergen-ingredient_flyer-page-001.jpg',
@@ -11,7 +13,9 @@ const nutritionPages = [
   'https://www.datocms-assets.com/95658/1751552896-cr0026254_lj_nutri-info-allergen-ingredient_flyer-page-008.jpg'
 ]
 
-export function NutritionPageClient() {
+export function NutritionPageClient({ items }: { items: MenuItem[] }) {
+  const calorieRows = items.filter((item) => item.isAvailable && item.calories.label !== 'Calories vary').slice(0, 30)
+
   return (
     <main className="bg-white text-black">
       <section className="mx-auto w-full max-w-[2048px] px-5 pb-8 pt-5 sm:px-8 lg:px-10">
@@ -35,7 +39,45 @@ export function NutritionPageClient() {
         </h1>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[2048px] grid-cols-1 items-start gap-x-8 gap-y-10 px-0 pb-12 sm:px-6 md:grid-cols-2 xl:grid-cols-3 2xl:px-10">
+      <section className="mx-auto w-full max-w-[1180px] px-5 pb-12 sm:px-8">
+        <div className="border-l-4 border-orange pl-5">
+          <h2 className="font-display text-2xl font-black uppercase sm:text-3xl">Calories, allergens and serving information</h2>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-700">
+            Use this independent guide to compare published calorie ranges, then review the official nutrition pages below for fat, sodium, carbohydrates, protein, ingredients and allergen details. Recipes and serving sizes can change, and restaurants may use shared preparation areas.
+          </p>
+          <p className="mt-3 text-sm font-bold text-slate-500">Reviewed July 15, 2026. For serious allergies, confirm ingredients directly with the restaurant.</p>
+        </div>
+
+        <div className="mt-8 overflow-x-auto border border-slate-300">
+          <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+            <caption className="sr-only">Selected Little Caesars menu items and published calorie labels</caption>
+            <thead className="bg-orange text-white">
+              <tr>
+                <th className="px-4 py-3 font-black uppercase">Menu item</th>
+                <th className="px-4 py-3 font-black uppercase">Calories</th>
+                <th className="px-4 py-3 font-black uppercase">Allergens listed</th>
+                <th className="px-4 py-3 font-black uppercase">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {calorieRows.map((item, index) => (
+                <tr key={item.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}>
+                  <th scope="row" className="px-4 py-3 font-bold text-black">{item.name}</th>
+                  <td className="px-4 py-3 whitespace-nowrap">{item.calories.label}</td>
+                  <td className="px-4 py-3">{item.allergens.length ? item.allergens.join(', ') : 'See official guide'}</td>
+                  <td className="px-4 py-3">
+                    <Link href={`/item/${item.id}`} className="font-black text-orange hover:underline">View item</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[2048px] pb-12">
+        <h2 className="px-5 pb-6 text-center font-display text-2xl font-black uppercase sm:px-8">Official nutrition and allergen guide pages</h2>
+        <div className="grid grid-cols-1 items-start gap-x-8 gap-y-10 px-0 sm:px-6 md:grid-cols-2 xl:grid-cols-3 2xl:px-10">
         {nutritionPages.map((page, index) => (
           <figure key={page} className="mx-auto w-full max-w-[680px] bg-white md:max-w-none">
             <Image
@@ -49,6 +91,7 @@ export function NutritionPageClient() {
             />
           </figure>
         ))}
+        </div>
       </section>
 
       <section className="mx-auto flex w-full max-w-[2048px] flex-col items-center gap-4 px-5 pb-12 text-center sm:px-10">

@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seo:audit": "node scripts/seo-audit.mjs",
     "pages:build": "npx @opennextjs/cloudflare build",
     "deploy": "npx @opennextjs/cloudflare deploy"
   },

@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
   experimental: { optimizeCss: true },
   compress: true,
   poweredByHeader: false,
+  redirects: async () => [
+    { source: '/menu/pizza', destination: '/menu/large-round-pizzas', permanent: true },
+    { source: '/menu/limited', destination: '/menu/limited-time-offer', permanent: true },
+    { source: '/menu/wings', destination: '/menu/sides', permanent: true },
+    { source: '/menu/desserts', destination: '/menu/sides', permanent: true }
+  ],
   headers: async () => [
     {
       source: '/api/:path*',

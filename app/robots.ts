@@ -1,7 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { siteConfig, absoluteUrl } from '@/lib/seo'
-
-export const runtime = 'edge'
+import { absoluteUrl } from '@/lib/seo'
 
 const disallowedPaths = [
   '/admin/',
@@ -16,28 +14,11 @@ const disallowedPaths = [
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: disallowedPaths
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: disallowedPaths
-      },
-      {
-        userAgent: 'Googlebot-Image',
-        allow: '/'
-      },
-      {
-        userAgent: 'Bingbot',
-        allow: '/',
-        disallow: disallowedPaths
-      }
-    ],
-    sitemap: [absoluteUrl('/sitemap.xml'), absoluteUrl('/image-sitemap.xml')],
-    host: siteConfig.url
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: disallowedPaths
+    },
+    sitemap: [absoluteUrl('/sitemap.xml'), absoluteUrl('/image-sitemap.xml')]
   }
 }

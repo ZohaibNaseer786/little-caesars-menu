@@ -1,205 +1,108 @@
 'use client'
 
-import Image from 'next/image'
-import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { useDeals } from '@/hooks/useDeals'
 import type { Deal } from '@/types'
 
-type CouponDeal = {
-  eyebrow: string
-  image: string
-  imageAlt: string
-  amount: string
-  headline: string
-  instructions: string
-  code: string
-  note: string
+function isCurrentPublicDeal(deal: Deal, asOfDate: string) {
+  return deal.isAvailable !== false && !deal.isAppOnly && (!deal.validUntil || deal.validUntil >= asOfDate)
 }
 
-const mealCreative = {
-  title: 'Four-N-One™ Stix Meal Deal',
-  subtitle: 'Four-N-One Stix + Large Classic + Crazy Combo® + 2L PEPSI-COLA® Product',
-  image: 'https://banners.littlecaesars.com/us/banner-assets/1f6871fb-0299-42b0-85d3-f6854d1dd820.png'
+function priceLabel(deal: Deal) {
+  if (deal.price > 0) return `$${deal.price.toFixed(2)}`
+  if (deal.discountValue > 0) return `$${deal.discountValue.toFixed(0)} OFF`
+  return 'Public offer'
 }
 
-const defaultCoupons: CouponDeal[] = [
-  {
-    eyebrow: 'SAVE HERE!',
-    image: 'https://mobilestatic.littlecaesars.com/weborderingimages/4a10fa34-207e-4db4-ba42-30e3c7907318.jpg',
-    imageAlt: 'Four-N-One Stix meal deal items',
-    amount: '$3 OFF',
-    headline: 'YOUR ORDER OF $18 OR MORE',
-    instructions: 'ADD ITEMS TO CART • CODE APPLIED AT CHECKOUT',
-    code: '3OFF18',
-    note: 'Read more'
-  },
-  {
-    eyebrow: 'GET DELIVERY!',
-    image: 'https://mobilestatic.littlecaesars.com/weborderingimages/4f19503b-3c2f-4322-af48-b471e48e47c0.jpg',
-    imageAlt: 'Little Caesars delivery deal items',
-    amount: '$4 OFF DELIVERY',
-    headline: 'WITH YOUR ORDER OF $24 OR MORE',
-    instructions: 'ADD ITEMS TO CART • CODE APPLIED AT CHECKOUT',
-    code: 'DELIVERY4YOU',
-    note: 'Read more'
-  }
-]
-
-function asDeals(value: unknown): Deal[] {
-  return Array.isArray(value)
-    ? (value.filter((deal) => deal && typeof deal === 'object' && typeof (deal as { title?: unknown }).title === 'string') as Deal[])
-    : []
+function expirationLabel(deal: Deal) {
+  if (!deal.validUntil) return 'Availability and prices vary by participating location.'
+  return `Listed through ${new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(`${deal.validUntil}T00:00:00`))}.`
 }
 
-function findDeal(deals: Deal[], matcher: (deal: Deal) => boolean) {
-  return deals.find((deal) => deal.isAvailable !== false && !deal.isAppOnly && matcher(deal))
-}
-
-function couponFromDeal(fallback: CouponDeal, deal?: Deal): CouponDeal {
-  if (!deal) {
-    return fallback
-  }
-
-  const discountValue = deal.discountValue || deal.originalPrice || 0
-  const amount =
-    fallback.code === 'DELIVERY4YOU'
-      ? `$${discountValue || 4} OFF DELIVERY`
-      : `$${discountValue || 3} OFF`
-  const minimumOrder = deal.minimumOrder || (fallback.code === 'DELIVERY4YOU' ? 24 : 18)
-
-  return {
-    ...fallback,
-    eyebrow: deal.badge || fallback.eyebrow,
-    image: deal.image || fallback.image,
-    imageAlt: `${deal.title} deal`,
-    amount,
-    headline: fallback.code === 'DELIVERY4YOU' ? `WITH YOUR ORDER OF $${minimumOrder} OR MORE` : `YOUR ORDER OF $${minimumOrder} OR MORE`,
-    instructions: deal.description || fallback.instructions,
-    code: deal.promoCode || fallback.code
-  }
-}
-
-function MealDealFeature({ deal }: { deal?: Deal }) {
+function FeaturedDeal({ deal }: { deal: Deal }) {
   return (
-    <article className="relative min-h-[360px] overflow-hidden bg-orange p-5 text-black sm:min-h-[440px] sm:p-7 lg:min-h-[460px]">
-      <div className="absolute inset-x-0 top-0 h-[66%] sm:h-[74%]">
-        <ImageWithFallback
-          src={mealCreative.image}
-          alt="Four-N-One Stix Meal Deal pizza, Crazy Bread and Pepsi"
-          fill
-          priority
-          sizes="(min-width: 1024px) 42vw, 100vw"
-          className="object-contain object-top"
-        />
+    <article className="relative min-h-[390px] overflow-hidden bg-orange p-5 text-black sm:min-h-[460px] sm:p-8">
+      <div className="absolute inset-x-0 top-0 h-[64%]">
+        <ImageWithFallback src={deal.image} alt={`${deal.title} public deal`} fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="object-contain object-top" />
       </div>
-      <div className="relative z-10 flex h-full min-h-[320px] flex-col justify-end sm:min-h-[380px]">
-        <h2 className="font-display text-4xl font-black uppercase leading-[0.92] tracking-normal text-white sm:text-6xl lg:text-7xl">
-          Four-N-One<span className="ml-2 font-sans text-2xl italic normal-case text-black sm:text-4xl">Stix</span>
-          <span className="block">Meal Deal</span>
-        </h2>
-        <p className="mt-2 text-xs font-bold sm:text-sm">{deal?.description || mealCreative.subtitle}</p>
+      <div className="relative z-10 flex min-h-[350px] flex-col justify-end sm:min-h-[400px]">
+        <p className="text-sm font-black uppercase tracking-[0.12em] text-black">Featured public deal</p>
+        <h2 className="mt-2 font-display text-4xl font-black uppercase leading-[0.96] text-white sm:text-6xl">{deal.title}</h2>
+        <p className="mt-3 max-w-xl text-sm font-bold leading-6">{deal.description}</p>
       </div>
     </article>
   )
 }
 
-function CouponCard({ coupon }: { coupon: CouponDeal }) {
+function PublicDealCard({ deal, label }: { deal: Deal; label: string }) {
   return (
     <article
-      className="relative min-h-[380px] p-3 sm:min-h-[420px] sm:p-4"
-      style={{
-        backgroundImage: 'radial-gradient(circle, rgba(26,26,26,0.2) 1.2px, transparent 1.8px)',
-        backgroundSize: '14px 14px'
-      }}
+      className="relative min-h-[390px] p-3 sm:min-h-[460px] sm:p-4"
+      style={{ backgroundImage: 'radial-gradient(circle, rgba(26,26,26,0.2) 1.2px, transparent 1.8px)', backgroundSize: '14px 14px' }}
     >
-      <div className="relative flex h-full min-h-[352px] flex-col items-center bg-white px-4 pb-6 pt-9 text-center sm:min-h-[388px] sm:px-8">
-        <div className="absolute -top-4 left-1/2 flex h-8 w-44 -translate-x-1/2 items-center justify-center bg-black px-5 text-sm font-black uppercase text-white [clip-path:polygon(8%_0,92%_0,100%_50%,92%_100%,8%_100%,0_50%)]">
-          {coupon.eyebrow}
+      <div className="relative flex h-full min-h-[366px] flex-col items-center bg-white px-5 pb-7 pt-10 text-center sm:min-h-[428px] sm:px-9">
+        <div className="absolute -top-4 left-1/2 flex h-8 w-48 -translate-x-1/2 items-center justify-center bg-black px-5 text-xs font-black uppercase text-white [clip-path:polygon(8%_0,92%_0,100%_50%,92%_100%,8%_100%,0_50%)]">
+          {label}
         </div>
-        <div className="relative h-24 w-48 sm:h-32 sm:w-64">
-          <ImageWithFallback
-            src={coupon.image}
-            alt={coupon.imageAlt}
-            fill
-            sizes="260px"
-            className="object-contain"
-          />
+        <div className="relative h-28 w-full max-w-[280px] sm:h-36">
+          <ImageWithFallback src={deal.image} alt={`${deal.title} deal image`} fill sizes="280px" className="object-contain" />
         </div>
-        <h2 className="mt-5 font-display text-3xl font-black uppercase leading-none text-orange sm:text-5xl">{coupon.amount}</h2>
-        <p className="mt-3 font-display text-lg font-black uppercase leading-tight text-orange sm:text-2xl">{coupon.headline}</p>
-        <p className="mt-7 text-xs font-black uppercase text-black">{coupon.instructions}</p>
-        <div className="mt-3 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <strong className="break-all font-display text-2xl font-black uppercase tracking-normal text-black sm:text-4xl">{coupon.code}</strong>
-          <span className="hidden h-12 w-px bg-black/40 sm:block" />
-          <button
-            type="button"
-            className="min-h-12 border-2 border-orange bg-white px-7 text-sm font-black uppercase text-orange transition hover:bg-orange hover:text-white"
-          >
-            Apply Code
-          </button>
-        </div>
-        <button type="button" className="mt-auto self-end text-xs font-black text-orange transition hover:text-black">
-          {coupon.note} <span aria-hidden="true">⌄</span>
-        </button>
+        <p className="mt-5 font-display text-4xl font-black uppercase leading-none text-orange sm:text-5xl">{priceLabel(deal)}</p>
+        <h2 className="mt-4 font-display text-xl font-black uppercase leading-tight text-orange sm:text-2xl">{deal.title}</h2>
+        <p className="mt-4 max-w-md text-sm font-semibold leading-6 text-slate-700">{deal.description}</p>
+        {deal.promoCode && (
+          <div className="mt-5 border-2 border-dashed border-orange px-5 py-3">
+            <span className="text-xs font-black uppercase text-slate-500">Promo code</span>
+            <strong className="ml-3 font-display text-xl font-black uppercase text-black">{deal.promoCode}</strong>
+          </div>
+        )}
+        <p className="mt-auto pt-5 text-xs font-bold text-slate-500">{expirationLabel(deal)}</p>
       </div>
     </article>
   )
 }
 
-function ExclusiveDealsCard() {
+function DealGuideCard() {
   return (
-    <article className="relative flex min-h-[380px] items-center justify-center overflow-hidden border-2 border-orange bg-white px-5 py-10 text-center sm:min-h-[420px] sm:px-8 sm:py-12">
-      <span className="absolute -left-20 top-4 h-48 w-28 rounded-r-full bg-orange" />
-      <span className="absolute -left-16 bottom-14 h-44 w-28 rounded-r-full bg-orange" />
-      <span className="absolute -bottom-20 right-14 h-52 w-28 rounded-t-full bg-orange" />
-      <span className="absolute -right-12 bottom-28 h-40 w-24 rounded-l-full bg-orange" />
+    <article className="relative flex min-h-[390px] items-center justify-center overflow-hidden border-2 border-orange bg-white px-6 py-10 text-center sm:min-h-[460px]">
+      <div className="absolute -left-16 top-8 h-48 w-28 rounded-r-full bg-orange" />
+      <div className="absolute -bottom-16 right-12 h-48 w-28 rounded-t-full bg-orange" />
       <div className="relative z-10 max-w-md">
-        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-orange text-center font-display text-xl font-black uppercase leading-none text-white">
-          Crazy!<br />Crazy!<br />Deals
+        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-orange font-display text-lg font-black uppercase leading-none text-white">
+          Deal<br />Guide
         </div>
-        <h2 className="mt-7 font-display text-3xl font-black uppercase leading-tight text-orange sm:text-5xl">
-          Want Access To
-          <span className="block font-sans text-3xl italic normal-case text-black sm:text-5xl">Exclusive Deals?</span>
-        </h2>
-        <p className="mx-auto mt-4 max-w-sm text-lg font-semibold leading-7 text-black">
-          Subscribe for access to exclusive offers, promotions and Crazy!Crazy!® Deals
+        <h2 className="mt-7 font-display text-3xl font-black uppercase leading-tight text-orange sm:text-5xl">How Public Deals Work</h2>
+        <p className="mx-auto mt-5 max-w-sm text-base font-semibold leading-7 text-black">
+          National offers can be visible to everyone. Store and delivery-area offers may appear only after a location is selected. We exclude account-only promotions.
         </p>
-        <button type="button" className="mt-7 min-h-12 bg-black px-8 text-base font-black uppercase text-white transition hover:bg-orange">
-          Subscribe Now
-        </button>
+        <p className="mt-6 text-sm font-bold text-slate-600">Always confirm price, eligibility and expiration on the official checkout page.</p>
       </div>
     </article>
   )
 }
 
-export function DealsPageClient() {
-  const dealsQuery = useDeals()
-  const deals = asDeals(dealsQuery.data)
-  const mealDeal = findDeal(deals, (deal) => deal.title.toLowerCase().includes('four-n-one') && deal.title.toLowerCase().includes('meal'))
-  const saveDeal = findDeal(deals, (deal) => deal.promoCode === '3OFF18' || deal.title.toLowerCase().includes('$3 off'))
-  const deliveryDeal = findDeal(deals, (deal) => deal.promoCode === 'DELIVERY4YOU' || deal.title.toLowerCase().includes('delivery'))
-  const coupons = [couponFromDeal(defaultCoupons[0], saveDeal), couponFromDeal(defaultCoupons[1], deliveryDeal)]
+export function DealsPageClient({ initialDeals, asOfDate }: { initialDeals: Deal[]; asOfDate: string }) {
+  const dealsQuery = useDeals(initialDeals)
+  const deals = (dealsQuery.data ?? initialDeals).filter((deal) => isCurrentPublicDeal(deal, asOfDate))
+  const featured = deals.find((deal) => /meal deal|four-n-one/i.test(deal.title)) ?? deals[0]
+  const supporting = deals.filter((deal) => deal.id !== featured?.id).slice(0, 2)
 
   return (
     <main className="bg-white px-4 py-8 text-black sm:py-12">
+      <header className="mx-auto mb-8 max-w-[1180px] sm:mb-10">
+        <p className="text-sm font-black uppercase tracking-[0.14em] text-orange">Public savings guide</p>
+        <h1 className="mt-2 font-display text-3xl font-black sm:text-5xl">Little Caesars Deals, Coupons and Promo Codes</h1>
+        <p className="mt-4 max-w-3xl leading-7 text-slate-700">
+          Browse general public offers without signing in. Deal prices, dates and eligibility can vary by store, delivery area and participating location.
+        </p>
+        <p className="mt-2 text-sm font-bold text-slate-500">Reviewed July 15, 2026.</p>
+      </header>
+
       <div className="mx-auto grid max-w-[1180px] gap-6 sm:gap-9 lg:grid-cols-2">
-        {dealsQuery.isLoading ? (
-          <>
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="min-h-[320px] bg-white p-3 sm:min-h-[420px] sm:p-4">
-                <LoadingSkeleton className="h-full min-h-[300px] w-full rounded-none sm:min-h-[390px]" />
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            <MealDealFeature deal={mealDeal} />
-            <CouponCard coupon={coupons[0]} />
-            <CouponCard coupon={coupons[1]} />
-            <ExclusiveDealsCard />
-          </>
-        )}
+        {featured ? <FeaturedDeal deal={featured} /> : <DealGuideCard />}
+        {supporting[0] ? <PublicDealCard deal={supporting[0]} label="Public offer" /> : <DealGuideCard />}
+        {supporting[1] ? <PublicDealCard deal={supporting[1]} label="More value" /> : <DealGuideCard />}
+        <DealGuideCard />
       </div>
     </main>
   )

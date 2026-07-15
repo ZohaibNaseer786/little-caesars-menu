@@ -2,7 +2,7 @@ import { blogPosts } from '@/lib/blog'
 import { getFallbackMenu } from '@/lib/fallback'
 import { absoluteUrl } from '@/lib/seo'
 
-export const runtime = 'edge'
+export const dynamic = 'force-static'
 
 type ImageEntry = {
   loc: string
@@ -48,11 +48,6 @@ const staticImagePages: ImageSitemapUrl[] = [
         loc: absoluteUrl('/images/home/four-n-one-meal-deal.png'),
         title: 'Little Caesars Deals and Promo Codes',
         caption: 'Little Caesars deals, coupons and promo code guide'
-      },
-      {
-        loc: absoluteUrl('/images/home/three-off-18.png'),
-        title: 'Little Caesars $3 Off Deal',
-        caption: 'Little Caesars coupon and deal card'
       }
     ]
   },

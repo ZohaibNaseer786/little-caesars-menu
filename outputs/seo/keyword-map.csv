@@ -1,0 +1,13 @@
+Priority,Cluster,Primary Keyword,Intent,Volume,Current Position,KD,Target URL,Recommended Action
+1,Menu prices,little caesars menu with pictures and prices,Transactional,8100,11,36,https://www.little-caesars-menus.us/blog/little-caesars-menu-prices,Protect and expand the picture-and-price guide; improve links from home and menu
+1,Menu prices,little caesars menu with prices,Navigational / Transactional,1900,7,26,https://www.little-caesars-menus.us/blog/little-caesars-menu-prices,Preserve URL and title while refreshing verified item prices
+1,Stores,little caesars locations,Informational,3600,18,27,https://www.little-caesars-menus.us/stores,Add crawlable location and hours guidance; earn local resource links
+1,Stores,little caesars closest to me,Commercial,2400,14,30,https://www.little-caesars-menus.us/stores,Improve store search reliability and location-focused internal links
+1,Stores,little caesars cerca de mí,Navigational,6600,25,31,https://www.little-caesars-menus.us/stores,Add useful bilingual query support without creating doorway pages
+1,Deals,little caesars deals,Navigational,12100,40,45,https://www.little-caesars-menus.us/deals,Keep public offers current; show verified terms and expiration dates
+1,Deals,little caesars pizza deals,Informational / Navigational,5400,31,27,https://www.little-caesars-menus.us/deals,Add price comparisons and deal FAQs based on current public offers
+1,Nutrition,little caesars calories,Informational,4400,43,35,https://www.little-caesars-menus.us/nutrition,Add indexable calorie table backed by official nutrition documents
+1,Nutrition,little caesars nutrition,Informational,3600,49,24,https://www.little-caesars-menus.us/nutrition,Improve source notes and item coverage; avoid unverified zero macros
+2,Hours,what time little caesars close,Commercial,2400,26,30,https://www.little-caesars-menus.us/blog/little-caesars-near-me-hours,Expand holiday-hours guidance and link to store finder
+2,Product,little caesars cookie dough brownie,Informational,880,20,24,https://www.little-caesars-menus.us/item/hnrs-cdbmm,Add richer product description and verified serving details
+2,Product,little caesars chicken wings,Informational,720,22,29,https://www.little-caesars-menus.us/item/hnrs-orcw,Build a complete wings comparison section with flavors calories and allergens

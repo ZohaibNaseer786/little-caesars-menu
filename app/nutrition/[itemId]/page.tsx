@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { AllergenBadges } from '@/components/nutrition/AllergenBadges'
-import { getFallbackItem } from '@/lib/fallback'
+import { getFallbackItem, getFallbackMenu } from '@/lib/fallback'
 import { absoluteUrl, siteConfig } from '@/lib/seo'
 
-export const runtime = 'edge'
+export function generateStaticParams() {
+  return getFallbackMenu().items.map((item) => ({ itemId: item.id }))
+}
+
+export const dynamicParams = false
 
 export async function generateMetadata({ params }: { params: Promise<{ itemId: string }> }): Promise<Metadata> {
   const { itemId } = await params
@@ -16,7 +20,8 @@ export async function generateMetadata({ params }: { params: Promise<{ itemId: s
     title: `${item.name} Nutrition Facts`,
     description: `Nutrition facts for ${item.name}: calories, fat, carbs, protein, sodium and allergens.`,
     keywords: [`${item.name} nutrition`, `${item.name} calories`, 'Little Caesars nutrition', ...siteConfig.keywords],
-    alternates: { canonical: absoluteUrl(`/nutrition/${item.id}`) }
+    alternates: { canonical: absoluteUrl(`/nutrition/${item.id}`) },
+    robots: { index: false, follow: true }
   }
 }
 
@@ -28,17 +33,22 @@ export default async function NutritionItemPage({ params }: { params: Promise<{ 
     notFound()
   }
 
+  const detailedRows = [
+    ['Total Fat', item.nutrition.totalFat, 'g'],
+    ['Saturated Fat', item.nutrition.saturatedFat, 'g'],
+    ['Trans Fat', item.nutrition.transFat, 'g'],
+    ['Cholesterol', item.nutrition.cholesterol, 'mg'],
+    ['Sodium', item.nutrition.sodium, 'mg'],
+    ['Total Carbs', item.nutrition.totalCarbs, 'g'],
+    ['Dietary Fiber', item.nutrition.dietaryFiber, 'g'],
+    ['Sugars', item.nutrition.sugars, 'g'],
+    ['Protein', item.nutrition.protein, 'g']
+  ]
+    .filter(([, value]) => Number(value) > 0)
+    .map(([label, value, unit]) => [String(label), `${value}${unit}`])
   const rows = [
-    ['Calories', `${item.nutrition.calories}`],
-    ['Total Fat', `${item.nutrition.totalFat}g`],
-    ['Saturated Fat', `${item.nutrition.saturatedFat}g`],
-    ['Trans Fat', `${item.nutrition.transFat}g`],
-    ['Cholesterol', `${item.nutrition.cholesterol}mg`],
-    ['Sodium', `${item.nutrition.sodium}mg`],
-    ['Total Carbs', `${item.nutrition.totalCarbs}g`],
-    ['Dietary Fiber', `${item.nutrition.dietaryFiber}g`],
-    ['Sugars', `${item.nutrition.sugars}g`],
-    ['Protein', `${item.nutrition.protein}g`],
+    ['Calories', item.calories.label],
+    ...detailedRows,
     ['Serving Size', item.nutrition.servingSize],
     ['Servings Per Container', `${item.nutrition.servingsPerContainer}`]
   ]
@@ -47,6 +57,7 @@ export default async function NutritionItemPage({ params }: { params: Promise<{ 
     <div className="container-shell max-w-3xl py-10">
       <h1 className="font-display text-4xl font-bold text-navy">{item.name} Nutrition</h1>
       <p className="mt-3 text-slate-600">{item.description}</p>
+      <p className="mt-3 text-sm font-bold text-slate-500">Detailed macro values are shown only when verified data is available. Review the official nutrition guide for the complete current record.</p>
       <div className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card">
         {rows.map(([label, value]) => (
           <div key={label} className="grid grid-cols-2 border-b border-slate-200 last:border-b-0">

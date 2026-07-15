@@ -21,15 +21,14 @@ const poppins = Poppins({
   weight: ['500', '600', '700']
 })
 
-export const runtime = 'edge'
-
 const GA_MEASUREMENT_ID = 'G-GXLT7DJEJB'
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: 'Little Caesars Menu 2026 | Prices, Deals, Coupons & Nutrition',
-    template: '%s | Little Caesars Menu'
+    template: '%s'
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
@@ -48,13 +47,8 @@ export const metadata: Metadata = {
     description: 'Independent guide with Little Caesars prices, calories, deals, promo codes, locations and nutrition.',
     images: [siteConfig.socialImage]
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large' }
-  },
   alternates: { canonical: siteConfig.url },
-  verification: { google: 'your-google-verification-code' }
+  ...(googleVerification ? { verification: { google: googleVerification } } : {})
 }
 
 const structuredData = {

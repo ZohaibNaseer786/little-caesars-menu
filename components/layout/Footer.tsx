@@ -25,9 +25,10 @@ const footerColumns = [
   {
     title: 'Contact',
     links: [
-      { label: 'About', href: '/' },
-      { label: 'Contact', href: '/stores' },
-      { label: 'Privacy Policy', href: 'https://privacy.littlecaesars.com/us-privacy-policy/en-us' },
+      { label: 'About This Guide', href: '/about' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Editorial Policy', href: '/editorial-policy' },
+      { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Accessibility', href: 'https://littlecaesars.com/en-us/accessibility/' }
     ]
   }
@@ -61,24 +62,14 @@ export function Footer() {
     <footer className="bg-white text-[#111827]">
       <section className="bg-[linear-gradient(90deg,#F56600,#FF7A1A)] px-4 py-14 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-[960px] text-center">
-          <h2 className="font-display text-3xl font-black sm:text-4xl">Never Miss a Deal or Menu Update</h2>
+          <h2 className="font-display text-3xl font-black sm:text-4xl">Independent Menu Research, Clearly Explained</h2>
           <p className="mt-4 text-lg text-white/90">
-            Subscribe to get the latest Little Caesars prices, coupons and menu updates delivered to your inbox
+            Learn how we review menu prices, public deals, nutrition references and location information.
           </p>
-          <form className="mx-auto mt-8 flex max-w-[520px] flex-col gap-3 sm:flex-row">
-            <label htmlFor="footer-email" className="sr-only">
-              Enter your email
-            </label>
-            <input
-              id="footer-email"
-              type="email"
-              placeholder="Enter your email"
-              className="min-h-14 flex-1 rounded-full border-0 px-6 text-[#111827] outline-none placeholder:text-slate-400"
-            />
-            <button type="submit" className="min-h-14 rounded-full bg-[#111827] px-8 text-base font-bold text-white transition hover:bg-black">
-              Subscribe
-            </button>
-          </form>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link href="/editorial-policy" className="min-h-12 rounded-full bg-[#111827] px-7 py-3 text-base font-bold text-white transition hover:bg-black">Editorial Policy</Link>
+            <Link href="/about" className="min-h-12 rounded-full border-2 border-white px-7 py-3 text-base font-bold text-white transition hover:bg-white hover:text-[#F56600]">About This Guide</Link>
+          </div>
         </div>
       </section>
 
@@ -108,7 +99,7 @@ export function Footer() {
       <section className="bg-[#F56600] px-4 py-5 text-white sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1216px] flex-col items-center justify-between gap-4 text-sm sm:flex-row">
           <div className="flex flex-wrap items-center justify-center gap-5">
-            <Link href="https://privacy.littlecaesars.com/us-privacy-policy/en-us" className="font-medium hover:underline">
+            <Link href="/privacy" className="font-medium hover:underline">
               Privacy Policy
             </Link>
             <a href="https://littlecaesars.com/en-us/accessibility/" target="_blank" rel="noreferrer" className="font-medium hover:underline">
@@ -129,7 +120,7 @@ export function Footer() {
               </a>
             ))}
           </div>
-          <p className="font-medium">© 2026 Little Caesars Menu</p>
+          <p className="font-medium">© 2026 Independent Little Caesars Menu Guide</p>
         </div>
         <p className="mx-auto mt-5 max-w-[1216px] text-center text-xs text-white/85">
           Disclaimer: We are an independent menu guide and are not affiliated with Little Caesar Enterprises, Inc. All trademarks belong to their respective owners.
