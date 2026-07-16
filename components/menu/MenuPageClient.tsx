@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
 import { FilterBar } from '@/components/menu/FilterBar'
@@ -37,9 +38,18 @@ type MenuPageClientProps = {
   initialMenu: MenuResponse
   initialCategories: Category[]
   searchQuery?: string
+  pageTitle?: string
+  pageDescription?: string
 }
 
-export function MenuPageClient({ categorySlug, initialMenu, initialCategories, searchQuery = '' }: MenuPageClientProps) {
+export function MenuPageClient({
+  categorySlug,
+  initialMenu,
+  initialCategories,
+  searchQuery = '',
+  pageTitle = 'Little Caesars menu with pictures and prices',
+  pageDescription = 'Explore HOT-N-READY favorites, ExtraMostBestest pizzas, Detroit-style deep dish, Crazy Bread, wings, desserts, prices and calories in one clean menu guide.'
+}: MenuPageClientProps) {
   const [filter, setFilter] = useState('all')
   const storeId = useAppStore((state) => state.storeId)
   const orderType = useAppStore((state) => state.orderType)
@@ -68,11 +78,9 @@ export function MenuPageClient({ categorySlug, initialMenu, initialCategories, s
           <div className="grid gap-6 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-center lg:p-10 xl:p-12">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.16em] text-white/85">Little Caesars Menu Guide</p>
-              <h1 className="mt-3 font-display text-3xl font-bold leading-tight text-white min-[380px]:text-4xl sm:text-5xl lg:text-6xl">
-                Little Caesars menu with pictures and prices
-              </h1>
+              <h1 className="mt-3 font-display text-3xl font-bold leading-tight text-white min-[380px]:text-4xl sm:text-5xl lg:text-6xl">{pageTitle}</h1>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-white/80 sm:text-base">
-                Explore HOT-N-READY favorites, ExtraMostBestest pizzas, Detroit-style deep dish, Crazy Bread, wings, desserts, prices and calories in one clean menu guide.
+                {pageDescription}
               </p>
               <div className="mt-6 flex flex-col gap-3 min-[380px]:flex-row min-[380px]:flex-wrap">
                 <span className="inline-flex min-h-11 items-center rounded-full bg-black px-4 text-sm font-black uppercase text-white">
@@ -96,6 +104,22 @@ export function MenuPageClient({ categorySlug, initialMenu, initialCategories, s
           </div>
         </div>
       </section>
+
+      <nav aria-label="Little Caesars menu resources" className="container-shell">
+        <div className="flex gap-3 overflow-x-auto border-y border-slate-200 py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {[
+            { href: '/blog/little-caesars-menu-prices', label: 'Picture & price guide' },
+            { href: '/research/menu-price-comparison', label: '108-item price table' },
+            { href: '/deals', label: 'Current public deals' },
+            { href: '/nutrition', label: 'Calories & allergens' },
+            { href: '/stores', label: 'Locations & hours' }
+          ].map((link) => (
+            <Link key={link.href} href={link.href} className="shrink-0 rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-black text-navy transition hover:border-orange hover:text-orange">
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
 
       {categories.length > 0 && <CategoryTabs categories={categories} />}
       <FilterBar active={filter} onChange={setFilter} />

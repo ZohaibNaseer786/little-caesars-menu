@@ -1,0 +1,14 @@
+week,start_date,primary_page,primary_keyword,action,measurement
+1,2026-07-15,/blog/little-caesars-menu-prices,little caesars menu with pictures and prices,Expand price comparison and validate image coverage,Search Console impressions CTR and position
+2,2026-07-22,/stores,little caesars locations,Improve location intent copy and internal links,Clicks for locations and near me queries
+3,2026-07-29,/deals,little caesars deals,Refresh only currently public general deals,Clicks position and freshness review
+4,2026-08-05,/nutrition,little caesars calories,Validate calorie labels and improve nutrition guide links,Clicks for calories and nutrition queries
+5,2026-08-12,/item/hnrs-orcw,little caesars chicken wings,Review wings price calories allergens and related links,Item impressions and average position
+6,2026-08-19,/item/hnrs-cdbmm,cookie dough brownie,Review serving price calories and dessert links,Item impressions and average position
+7,2026-08-26,/blog/hot-n-ready-menu-guide,hot n ready menu,Add fresh comparisons to round pizza category,Clicks and query coverage
+8,2026-09-02,/menu/detroit-style-deep-dish-pizzas,little caesars deep dish menu,Refresh category facts and item links,Category impressions and nonbrand queries
+9,2026-09-09,/research/menu-price-comparison,little caesars menu price list,Pitch dataset to food and budgeting publishers,Referring domains and referral sessions
+10,2026-09-16,/blog/little-caesars-deals-promo-codes,little caesars promo code,Remove expired claims and compare current public offers,CTR and freshness review
+11,2026-09-23,sitewide,internal links to priority pages,Review orphan depth anchors and related content,Internal links and crawl depth
+12,2026-09-30,sitewide,search snippet optimization,Rewrite low CTR titles and descriptions from GSC data,CTR by page and query
+13,2026-10-07,sitewide,quarterly content audit,Consolidate cannibalization and refresh dates only after review,Indexed pages clicks and referring domains

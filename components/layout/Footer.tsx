@@ -15,7 +15,8 @@ const footerColumns = [
   {
     title: 'Guides',
     links: [
-      { label: 'Pizza Prices', href: '/menu' },
+      { label: 'Picture & Price Guide', href: '/blog/little-caesars-menu-prices' },
+      { label: 'Menu Price Dataset', href: '/research/menu-price-comparison' },
       { label: 'Coupons & Deals', href: '/deals' },
       { label: 'Calories & Allergens', href: '/nutrition' },
       { label: 'Near Me & Hours', href: '/blog/little-caesars-near-me-hours' },

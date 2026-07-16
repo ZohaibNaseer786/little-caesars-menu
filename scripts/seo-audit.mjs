@@ -33,6 +33,7 @@ if (sitemap.response.status !== 200) throw new Error(`Sitemap returned ${sitemap
 const sitemapUrls = [...sitemap.body.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => decodeXml(match[1]))
 const uniqueUrls = new Set(sitemapUrls)
 if (uniqueUrls.size !== sitemapUrls.length) errors.push('sitemap contains duplicate URLs')
+if (!uniqueUrls.has(`${productionHost}/research/menu-price-comparison`)) errors.push('research dataset page is missing from the sitemap')
 
 for (const sitemapUrl of sitemapUrls) {
   const parsed = new URL(sitemapUrl)
@@ -57,6 +58,24 @@ for (const sitemapUrl of sitemapUrls) {
   if (title.length > 70) warnings.push(`${sitemapUrl} title is ${title.length} characters`)
   if (description.length > 180) warnings.push(`${sitemapUrl} description is ${description.length} characters`)
   if (body.includes('your-google-verification-code')) errors.push(`${sitemapUrl} contains a placeholder Google verification token`)
+
+  if (parsed.pathname.startsWith('/blog/') && !body.includes('Little Caesars Menu Editorial Team')) {
+    errors.push(`${sitemapUrl} has no visible editorial byline`)
+  }
+  if (parsed.pathname.startsWith('/blog/') && !body.includes('Sources and Review Method')) {
+    errors.push(`${sitemapUrl} has no visible source methodology`)
+  }
+  if (parsed.pathname.startsWith('/item/') && !body.includes('/research/menu-price-comparison')) {
+    errors.push(`${sitemapUrl} does not link to the price comparison dataset`)
+  }
+  if (parsed.pathname.startsWith('/menu/') && !body.includes('/nutrition') && !body.includes('/research/menu-price-comparison')) {
+    errors.push(`${sitemapUrl} does not expose category research links`)
+  }
+  if (parsed.pathname === '/research/menu-price-comparison') {
+    if (!body.includes('https://schema.org') || !body.includes('Dataset')) errors.push(`${sitemapUrl} has no Dataset structured data`)
+    if (!body.includes('/downloads/menu-price-comparison.csv')) errors.push(`${sitemapUrl} does not link to its CSV download`)
+    if (!body.includes('Report a correction')) errors.push(`${sitemapUrl} has no correction path`)
+  }
 }
 
 const canonicalCounts = pages.reduce((counts, page) => {
@@ -81,6 +100,19 @@ for (const path of invalidPaths) {
 
 const home = await read(baseUrl)
 if (!home.body.includes('G-GXLT7DJEJB')) errors.push('Google Analytics measurement ID is missing from rendered HTML')
+if (!home.body.includes('/research/menu-price-comparison')) errors.push('sitewide navigation does not link to the research dataset')
+
+const menuPage = await read(`${baseUrl}/menu`)
+for (const requiredLink of ['/blog/little-caesars-menu-prices', '/research/menu-price-comparison', '/deals', '/nutrition', '/stores']) {
+  if (!menuPage.body.includes(`href="${requiredLink}"`)) errors.push(`/menu is missing priority internal link ${requiredLink}`)
+}
+
+const csvDownload = await read(`${baseUrl}/downloads/menu-price-comparison.csv`)
+if (csvDownload.response.status !== 200) errors.push(`menu price CSV returned ${csvDownload.response.status}`)
+if (!csvDownload.response.headers.get('content-type')?.includes('text/csv')) errors.push('menu price download is not served as CSV')
+const csvRows = csvDownload.body.trim().split('\n')
+if (csvRows.length !== 109) errors.push(`menu price CSV should have 109 rows including the header but has ${csvRows.length}`)
+if (!csvDownload.body.includes('item_id,item_name,category,guide_price_usd')) errors.push('menu price CSV header is incomplete')
 
 console.log(`SEO crawl: ${pages.length} sitemap pages`)
 console.log(`Errors: ${errors.length}`)

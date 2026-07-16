@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { blogPosts, getBlogPost } from '@/lib/blog'
+import { EditorialByline } from '@/components/seo/EditorialByline'
 import { getFallbackMenu } from '@/lib/fallback'
 import { absoluteUrl, siteConfig, truncateSeoText } from '@/lib/seo'
 
@@ -65,8 +66,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     dateModified: post.updated,
     author: {
       '@type': 'Organization',
-      name: siteConfig.name,
-      url: siteConfig.url
+      name: 'Little Caesars Menu Editorial Team',
+      url: absoluteUrl('/about')
     },
     publisher: {
       '@type': 'Organization',
@@ -114,10 +115,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <p className="mt-8 text-sm font-black uppercase tracking-[0.14em] text-[#F56600]">{post.category}</p>
               <h1 className="mt-4 font-display text-4xl font-black leading-tight sm:text-5xl">{post.title}</h1>
               <p className="mt-5 text-base leading-8 text-slate-700 sm:text-lg">{post.description}</p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-600">
-                <span className="rounded-full bg-white px-4 py-2 font-bold">{post.updated}</span>
-                <span className="rounded-full bg-white px-4 py-2 font-bold">{post.readTime}</span>
-              </div>
+              <EditorialByline updated={post.updated} readTime={post.readTime} />
             </div>
             <div className="relative min-h-[260px] overflow-hidden rounded-2xl bg-white shadow-[0_18px_42px_-30px_rgba(15,23,42,0.85)] sm:min-h-[340px]">
               <Image src={post.image} alt={post.imageAlt} fill priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain p-6" />
@@ -170,8 +168,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   <Link href="/menu" className="mt-6 inline-flex font-bold text-[#F56600] hover:text-[#D94F00]">
                     Browse the complete menu and all categories &rarr;
                   </Link>
+                  <span className="mx-3 text-slate-300" aria-hidden="true">|</span>
+                  <Link href="/research/menu-price-comparison" className="mt-6 inline-flex font-bold text-[#F56600] hover:text-[#D94F00]">
+                    Download the 108-item price comparison &rarr;
+                  </Link>
                 </section>
               )}
+
+              <section className="mt-12 border-y border-slate-200 py-7" aria-labelledby="article-sources">
+                <h2 id="article-sources" className="font-display text-2xl font-black text-[#111827]">Sources and Review Method</h2>
+                <p className="mt-3 leading-7 text-slate-700">
+                  Our editorial team compares the site&apos;s structured menu dataset with public Little Caesars menu, nutrition and location references. We label prices as guide prices because store, order type, tax and delivery fees can change the final total.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold">
+                  <a href="https://littlecaesars.com/en-us/menu/" target="_blank" rel="noreferrer" className="text-[#F56600] hover:underline">Official menu reference</a>
+                  <a href="https://littlecaesars.com/en-us/menu/nutrition/" target="_blank" rel="noreferrer" className="text-[#F56600] hover:underline">Official nutrition reference</a>
+                  <Link href="/editorial-policy" className="text-[#F56600] hover:underline">Our editorial policy</Link>
+                  <Link href="/contact" className="text-[#F56600] hover:underline">Report a correction</Link>
+                </div>
+              </section>
 
               <section className="mt-12 rounded-2xl border border-[#FFD2B8] bg-[#FFF7F0] p-6 sm:p-8">
                 <h2 className="font-display text-2xl font-black">Quick Answers</h2>

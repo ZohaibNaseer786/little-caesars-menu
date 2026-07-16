@@ -28,6 +28,7 @@ export const contentDates = {
   deals: '2026-07-15',
   nutrition: '2026-07-15',
   stores: '2026-07-15',
+  research: '2026-07-15',
   site: '2026-07-15'
 } as const
 
